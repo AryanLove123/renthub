@@ -1,0 +1,71 @@
+<div class="register-page">
+    <mat-card class="register-card" appearance="outlined">
+        <div class="register-icon">
+            <mat-icon>home_work</mat-icon>
+            <span>RentHub</span>
+        </div>
+        <h1 class="register-title">Create your account</h1>
+        <p class="register-subtitle">Join as a tenant to browse listings, or as a landlord to post properties.</p>
+
+        <form [formGroup]="registerForm" class="register-form">
+            <mat-form-field appearance="outline" class="register-form-field">
+                <mat-label>First Name</mat-label>
+                <input matInput type="text" formControlName="firstName">
+                @if(registerForm.controls.firstName.touched && registerForm.controls.firstName.hasError('required')){
+                    <mat-error>First Name is required.</mat-error>
+                }
+                @if(registerForm.controls.firstName.touched && registerForm.controls.firstName.hasError('minlength')){
+                    <mat-error>First Name must be at least 2 characters long.</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="register-form-field">
+                <mat-label>Last Name</mat-label>
+                <input matInput type="text" formControlName="lastName">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="register-form-field">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" formControlName="email" autocomplete="email">
+                @if(registerForm.controls.email.touched && registerForm.controls.email.hasError('required')){
+                    <mat-error>Email is required.</mat-error>
+                }
+                @if(registerForm.controls.email.touched && registerForm.controls.email.hasError('email')){
+                    <mat-error>Please enter a valid email address.</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-radio-group formControlName="role" class="register-role-group">
+                <mat-radio-button value="TENANT">Tenant- Looking for a property!!</mat-radio-button>
+                <mat-radio-button value="LANDLORD">Landlord- Looking for Listing a property!!</mat-radio-button>
+            </mat-radio-group>
+
+            <mat-form-field appearance="outline" class="register-form-field">
+                <mat-label>Password</mat-label>
+                <input matInput [type]= "hidePassword() ? 'password' : 'text'" formControlName="password" autocomplete="new-password">
+                <button mat-icon-button matSuffix type="button" (click)="hidePassword.set(!hidePassword())">
+                    <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                @if(registerForm.controls.password.touched && registerForm.controls.password.hasError('required')){
+                    <mat-error>Password is required.</mat-error>
+                }
+                @if(registerForm.controls.password.touched && registerForm.controls.password.hasError('minlength')){
+                    <mat-error>Password must be at least 6 characters long.</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="register-form-field">
+                <mat-label>Confirm Password</mat-label>
+                <input matInput [type]= "hideConfirmPassword() ? 'password' : 'text'" formControlName="confirmPassword" autocomplete="new-password">
+                <button mat-icon-button matSuffix type="button" (click)="hideConfirmPassword.set(!hideConfirmPassword())">
+                    <mat-icon>{{ hideConfirmPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                @if(registerForm.controls.confirmPassword.touched && registerForm.controls.confirmPassword.hasError('required')){
+                    <mat-error>Confirm Password is required.</mat-error>
+                }
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" class="register-button" (click)="onSubmit()">Register</button>
+        </form>
+    </mat-card>
+</div>

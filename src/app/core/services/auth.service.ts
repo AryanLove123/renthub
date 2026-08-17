@@ -1,0 +1,137 @@
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { AuthSession, StoredCredentials, User, UserRole } from '../models/user.model';
+import { from, map, Observable, of } from 'rxjs';
+import { StorageService } from './storage.service';
+import { generateId, nowIso } from '../../shared/utils/id.utils';
+
+export interface RegisterUser {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName?: string;
+  role: UserRole;
+}
+
+export interface LoginUser {
+  email: string;
+  password: string;
+}
+
+const USERS_KEY = 'renthub_users';
+const CREDENTIALS_KEY = 'renthub_credentials';
+const SESSION_KEY = 'renthub_session';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthService {
+  private storageService = inject(StorageService);
+  currentUser = signal<User | null>(null);
+
+  isAuthenticated = computed(() => this.currentUser() !== null);
+  isLandlord = computed(() => this.currentUser()?.role === UserRole.LANDLORD);
+  isTenant = computed(() => this.currentUser()?.role === UserRole.TENANT);
+
+  register(user: RegisterUser): Observable<User> {
+    const existingUsers = this.getUsers();
+
+    const userExists = existingUsers.some((u) => u.email === user.email);
+
+    if (userExists) {
+      throw new Error('User with this email already exists');
+    }
+
+    const existingCredentials = this.getCredentials();
+
+    const newUser: User = {
+      id: generateId('user'),
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user?.lastName,
+      role: user.role,
+      createdAt: nowIso(),
+    };
+
+    return this.hash(user.password).pipe(
+      map((passwordHash) => {
+        const newCredentials: StoredCredentials = {
+          userId: newUser.id,
+          email: user.email,
+          passwordHash,
+        };
+
+        this.storageService.setItem<User[]>(USERS_KEY, [...existingUsers, newUser]);
+
+        this.storageService.setItem<StoredCredentials[]>(CREDENTIALS_KEY, [
+          ...existingCredentials,
+          newCredentials,
+        ]);
+
+        return newUser;
+      }),
+    );
+  }
+
+  login(user: LoginUser): Observable<User> {
+    const existingUsers = this.getUsers();
+    const existingCredentials = this.getCredentials();
+
+    const credentials = existingCredentials.find((c) => c.email === user.email);
+
+    if (!credentials) {
+      throw new Error('Invalid credentials');
+    }
+
+    const isMatch = this.verify(user.password, credentials.passwordHash);
+
+    if (!isMatch) {
+      throw new Error('Invalid credentials');
+    }
+
+    const loggedInUser = existingUsers.find((u) => u.id === credentials.userId);
+
+    if (!loggedInUser) {
+      throw new Error('User not found');
+    }
+
+    this.startSession(loggedInUser);
+
+    return of(loggedInUser);
+  }
+
+  getUsers(): User[] {
+    return this.storageService.getItem<User[]>(USERS_KEY) || [];
+  }
+
+  getCredentials(): StoredCredentials[] {
+    return this.storageService.getItem<StoredCredentials[]>(CREDENTIALS_KEY) || [];
+  }
+
+  startSession(user: User): void {
+    const session: AuthSession = {
+      user,
+      token: generateId('token'),
+    };
+    this.storageService.setItem<AuthSession>(SESSION_KEY, session);
+    this.currentUser.set(user);
+  }
+
+  hash(password: string): Observable<string> {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+
+    const hashPromise = crypto.subtle.digest('SHA-256', data);
+
+    return from(hashPromise).pipe(
+      map((hashBuffer) =>
+        Array.from(new Uint8Array(hashBuffer))
+          .map((byte) => byte.toString(16).padStart(2, '0'))
+          .join(''),
+      ),
+    );
+  }
+
+  verify(password: string, storedHash: string): Observable<boolean> {
+    return this.hash(password).pipe(map((hash) => hash === storedHash));
+  }
+}
