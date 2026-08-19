@@ -17,15 +17,17 @@ export enum FurnishedStatus {
   Unfurnished = 'Unfurnished',
 }
 
-export enum Leasetype {
+export enum LeaseType {
   ShortTerm = 'Short Term',
   LongTerm = 'Long Term',
+  Both = 'Both'
 }
 
 export enum VegetarianPreference {
   Vegetarian = 'Vegetarian',
   NonVegetarian = 'Non-Vegetarian',
   Vegan = 'Vegan',
+  NoPreference = 'No Preference',
 }
 
 export enum PropertyStatus {
@@ -49,7 +51,7 @@ export const amenitiesList = [
   'Clubhouse',
 ];
 
-export type Amenity = typeof amenitiesList[number];
+export type Amenity = (typeof amenitiesList)[number];
 
 export interface Property {
   id: string;
@@ -60,11 +62,11 @@ export interface Property {
   areaSqft: number;
   bedrooms: number;
   bathrooms: number;
-  leaseType: Leasetype;
+  leaseType: LeaseType;
   vegetarianPreference: VegetarianPreference;
   propertyStatus: PropertyStatus;
   expectedRent: number;
-  isNegotiable: boolean;
+  isRentNegotiable: boolean;
   securityDeposit?: number;
   furnishedStatus: FurnishedStatus;
   description: string;
