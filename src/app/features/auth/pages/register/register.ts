@@ -1,13 +1,19 @@
 import { CommonModule } from '@angular/common';
-import ne from '@angular/common/locales/extra/ne';
 import { Component, inject, signal } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
+import { AuthService, RegisterUser } from '../../../../core/services/auth.service';
+import { UserRole } from '../../../../core/models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -19,30 +25,43 @@ import { MatRadioModule } from '@angular/material/radio';
     MatInputModule,
     MatRadioModule,
     MatIconModule,
-    MatButtonModule
-],
+    MatButtonModule,
+  ],
   templateUrl: './register.html',
   styleUrl: './register.scss',
 })
 export class RegisterComponent {
   hidePassword = signal(true);
   hideConfirmPassword = signal(true);
+  router = inject(Router);
+  authService = inject(AuthService);
   formBuilder = inject(FormBuilder);
+
   registerForm = this.formBuilder.group({
     firstName: ['', [Validators.required, Validators.minLength(2)]],
     lastName: [''],
     email: ['', [Validators.required, Validators.email]],
-    role: ['TENANT', [Validators.required]],
+    role: [UserRole.TENANT, [Validators.required]],
     password: ['', [Validators.required, Validators.minLength(6)]],
-    confirmPassword: ['', [Validators.required]],
   });
 
   onSubmit() {
     if (this.registerForm.valid) {
-      // Handle form submission logic here
       console.log('Form submitted:', this.registerForm.value);
+      const formValue = this.registerForm.getRawValue();
+      const userPayload: RegisterUser = {
+        firstName: formValue.firstName!,
+        lastName: formValue.lastName || undefined,
+        email: formValue.email!,
+        role: formValue.role!,
+        password: formValue.password!,
+      };
+      this.authService.register(userPayload).subscribe({
+        next:(newUser) =>{
+          this.router.navigateByUrl('/login');
+        }
+      });
     } else {
-      // Mark all fields as touched to trigger validation messages
       this.registerForm.markAllAsTouched();
     }
   }

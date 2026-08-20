@@ -1,0 +1,54 @@
+<div class="preview-page">
+    <div class="preview-heading">
+        <mat-icon>visibility</mat-icon>
+        <span>This is a preview. Your listing has not been published yet.</span>
+    </div>
+
+    <h2 class="preview-title">{{draft.title}}</h2>
+    <p class="preview-location">
+        <mat-icon>place</mat-icon>
+        {{draft.location.address}}, {{draft.location.locality}}, {{draft.location.city}}
+    </p>
+
+    <p class="preview-rent">
+        {{draft.expectedRent}}<span>/month</span>
+        @if(draft.isRentNegotiable){
+            <span>Negotiable</span>
+        }
+        @if(draft.isSharedProperty){
+            <span>SharedProperty</span>
+        }
+    </p>
+
+    <section class="preview-section">
+        <h2>Description</h2>
+        <p>{{draft.description}}</p>
+    </section>
+
+    <section class="preview-section">
+        <h2>Property Details</h2>
+        <p>hello</p>
+        <div class="preview-grid">
+            <span>{{draft.propertyType}}</span>
+            <span>{{draft.bedrooms}}</span>
+            <span>{{draft.bathrooms}}</span>
+            <span>{{draft.areaSqft}}</span>
+            <span>{{draft.furnishedStatus}}</span>
+            <span>{{draft.availableFrom}}</span>
+        </div>
+    </section>
+
+    <section class="preview-section">
+        <h2>Amenities</h2>
+        <mat-chip-set>
+            @for(item of draft.amenities; track item){
+                <mat-chip>{{item}}</mat-chip>
+            }
+        </mat-chip-set>
+    </section>
+
+    <div class="preview-actions">
+        <button mat-stroked-button (click)="isEditRequested.emit()">Back to edit</button>
+        <button mat-flat-button (click)="isConfirmed.emit()">Publish</button>
+    </div>
+</div>

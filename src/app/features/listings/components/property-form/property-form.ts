@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {
   buildPropertyFormData,
+  PropertyDraft,
   PropertyFormGroup,
 } from '../../../../shared/utils/property-form.utils';
 import { nowIso } from '../../../../shared/utils/id.utils';
@@ -44,6 +45,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 })
 export class PropertyFormComponent {
   @Input() initialData?: Property;
+  @Output() previewRequested = new EventEmitter<PropertyDraft>();
 
   imageUrlInput = '';
 
@@ -81,21 +83,24 @@ export class PropertyFormComponent {
   }
 
   onSubmit(): void {
-    console.log(this.propertyForm.value);
-    // const landLordId = this.authService.currentUser()?.id;
-    const landlordId = 'LandlordId123';
-    const status = PropertyStatus.Available;
-    const createdAt = nowIso();
-    const updatedAt = nowIso();
+    // console.log(this.propertyForm.value);
+    // // const landLordId = this.authService.currentUser()?.id;
+    // const landlordId = 'LandlordId123';
+    // const status = PropertyStatus.Available;
+    // const createdAt = nowIso();
+    // const updatedAt = nowIso();
 
-    const newProperty: any = {
-      ...this.propertyForm.value,
-      id: landlordId,
-      propertyStatus: status,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
-    };
-    const updated = [...this.propertyService.loadProperties(), newProperty];
-    this.propertyService.persistProperties(updated);
+    // const newProperty: any = {
+    //   ...this.propertyForm.value,
+    //   id: landlordId,
+    //   propertyStatus: status,
+    //   createdAt: createdAt,
+    //   updatedAt: updatedAt,
+    // };
+    // const updated = [...this.propertyService.loadProperties(), newProperty];
+    // this.propertyService.persistProperties(updated);
+    const draftData = this.propertyForm.getRawValue() as PropertyDraft;
+    console.log("this is my draftdata",draftData);
+    this.previewRequested.emit(draftData);
   }
 }

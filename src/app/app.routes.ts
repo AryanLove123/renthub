@@ -3,8 +3,15 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
     {
         path: '',
-        loadComponent: () => import('./features/listings/components/property-form/property-form').then(m => m.PropertyFormComponent)
-
+        loadComponent: () => import('./features/listings/pages/create-listing/create-listing').then(m => m.CreateListingComponent)
+    },
+    {
+        path: 'listings/:id',
+        loadComponent: () => import('./features/listings/pages/listing-detail/listing-detail').then(m=>m.ListingDetailComponent)
+    },
+    {
+        path: 'landlord/listings',
+        loadComponent: () => import('./features/listings/pages/my-listings/my-listings').then(m=>m.MyListingsComponent)
     },
     {
         path: 'register',

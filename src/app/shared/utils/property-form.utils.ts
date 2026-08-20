@@ -10,9 +10,11 @@ export function buildPropertyFormData(fb: FormBuilder, initialData?: Property) {
       [Validators.required, Validators.minLength(20), Validators.maxLength(500)],
     ],
 
-    city: [initialData?.location.city || '', [Validators.required]],
-    locality: [initialData?.location.locality || '', [Validators.required]],
-    address: [initialData?.location.address || '', [Validators.required]],
+    location: fb.group({
+      city: [initialData?.location?.city || '', [Validators.required]],
+      locality: [initialData?.location?.locality || '', [Validators.required]],
+      address: [initialData?.location?.address || '', [Validators.required]],
+    }),
 
     areaSqft: [initialData?.areaSqft || null, [Validators.required, Validators.min(100)]],
     bedrooms: [initialData?.bedrooms || 1, [Validators.required, Validators.min(1), Validators.max(10)]],
@@ -20,7 +22,7 @@ export function buildPropertyFormData(fb: FormBuilder, initialData?: Property) {
 
     expectedRent: [initialData?.expectedRent || null, [Validators.required, Validators.min(1000)]],
     securityDeposit: [
-      initialData?.securityDeposit || null,
+      initialData?.securityDeposit || 0,
       [Validators.required, Validators.min(0)],
     ],
     availableFrom: [initialData?.availableFrom || '', [Validators.required]],
@@ -38,6 +40,8 @@ export function buildPropertyFormData(fb: FormBuilder, initialData?: Property) {
   });
   return formData;
 }
+
+export type PropertyDraft = Omit<Property, 'id' | 'landlordId' | 'createdAt' | 'updatedAt' | 'propertyStatus'>;
 
 export type PropertyFormGroup = ReturnType<typeof buildPropertyFormData>;
 

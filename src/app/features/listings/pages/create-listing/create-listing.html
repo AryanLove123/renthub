@@ -1,0 +1,16 @@
+<div class="create-listing-page">
+    <h1 class="create-listing-title">
+        {{step() === 'FORM' ? 'Create a new listing': 'Preview your listing'}}
+    </h1>
+    <p class="create-listing-subtittle">
+        {{step() === 'FORM' ? 'Fill in the details below, You will be able to preview everything before it goes live.'
+        : 'Review how your listing will appear to renters, then confirm to publish.'}}
+    </p>
+
+    @if(step() == 'FORM'){
+    <app-property-form (previewRequested)="onPreviewRequested($event)"></app-property-form>
+    }
+    @else if (draft()) {
+    <app-property-preview [draft]="draft()!" [isSubmitting]="isSubmitting()" (isEditRequested)="onEditRequested()" (isConfirmed)="onConfirm()"></app-property-preview>
+    }
+</div>
