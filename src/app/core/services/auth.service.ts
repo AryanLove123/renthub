@@ -1,8 +1,9 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { AuthSession, StoredCredentials, User, UserRole } from '../models/user.model';
-import { from, map, Observable, of, throwError } from 'rxjs';
+import { forkJoin, from, map, Observable, of, throwError } from 'rxjs';
 import { StorageService } from './storage.service';
 import { generateId, nowIso } from '../../shared/utils/id.utils';
+import { SEED_CREDENTIALS, SEED_USERS } from '../../data/seed-data';
 
 export interface RegisterUser {
   email: string;
@@ -31,6 +32,36 @@ export class AuthService {
   isAuthenticated = computed(() => this.currentUser() !== null);
   isLandlord = computed(() => this.currentUser()?.role === UserRole.LANDLORD);
   isTenant = computed(() => this.currentUser()?.role === UserRole.TENANT);
+
+  constructor() {
+    this.seedDataAsync().subscribe();
+  }
+
+  private seedDataAsync(): Observable<boolean> {
+    const existingUsers = this.getUsers();
+    if (existingUsers.length > 0) {
+      return of(false);
+    }
+
+    // Convert plain text seed passwords to hashes asynchronously
+    const hashRequests$ = SEED_CREDENTIALS.map((cred) =>
+      this.hash(cred.passwordHash).pipe(
+        map((passwordHash) => ({
+          userId: cred.userId,
+          email: cred.email,
+          passwordHash,
+        }))
+      )
+    );
+
+    return forkJoin(hashRequests$).pipe(
+      map((hashedCredentials) => {
+        this.storageService.setItem<User[]>(USERS_KEY, SEED_USERS);
+        this.storageService.setItem<StoredCredentials[]>(CREDENTIALS_KEY, hashedCredentials);
+        return true;
+      })
+    );
+  }
 
   register(user: RegisterUser): Observable<User> {
     const existingUsers = this.getUsers();

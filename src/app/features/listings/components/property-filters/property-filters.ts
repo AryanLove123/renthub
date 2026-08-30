@@ -12,10 +12,24 @@ import { PropertyFilters } from '../../models/property-filters.model';
 import { amenitiesList, Amenity, FurnishedStatus, PropertyType } from '../../models/property.model';
 import { MatSelectModule } from '@angular/material/select';
 import { EnumLabelPipe } from '../../../../shared/pipes/enum-label.pipe';
+import { debounceTime } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-property-filters',
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatChipsModule, MatIconModule, MatButtonModule, MatExpansionModule, MatCheckboxModule, MatButtonToggleModule, MatSelectModule, MatInput, EnumLabelPipe],
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatChipsModule,
+    MatIconModule,
+    MatButtonModule,
+    MatExpansionModule,
+    MatCheckboxModule,
+    MatButtonToggleModule,
+    MatSelectModule,
+    MatInput,
+    EnumLabelPipe,
+  ],
   templateUrl: './property-filters.html',
   styleUrl: './property-filters.scss',
 })
@@ -37,7 +51,13 @@ export class PropertyFiltersComponent {
     bedrooms: this.fb.control<number | null>(null),
     furnishingStatus: this.fb.control<FurnishedStatus | null>(null),
     amenities: this.fb.control<Amenity[]>([]),
-  })
+  });
+
+  constructor() {
+    this.propertyFilterForm.valueChanges
+      .pipe(debounceTime(250), takeUntilDestroyed())
+      .subscribe(() => this.emitFilters());
+  }
 
   toggleAmenity(amenity: Amenity, checked: boolean): void {
     const current = this.propertyFilterForm.controls.amenities.value ?? [];
@@ -60,7 +80,7 @@ export class PropertyFiltersComponent {
     });
   }
 
-  emitFilters(): void{
+  emitFilters(): void {
     const value = this.propertyFilterForm.getRawValue();
     const filters: PropertyFilters = {
       minRent: value.minRent ?? undefined,

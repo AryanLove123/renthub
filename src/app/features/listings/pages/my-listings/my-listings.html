@@ -1,12 +1,14 @@
 <div class="my-listings-page">
     <div class="my-listings-header">
-        <h1>My Listings</h1>
-        <p>Manage the properties you've listed on RentHub.</p>
+    <div>
+      <h1>My Listings</h1>
+      <p>Manage the properties you've listed on RentHub.</p>
     </div>
-    <a mat-flat-button routerLink="/landlord/listings/create">
-        <mat-icon>add_home</mat-icon>
-        Create Listing
+    <a mat-flat-button color="primary" routerLink="/landlord/listings/create">
+      <mat-icon aria-hidden="true">add_home</mat-icon>
+      Create Listing
     </a>
+  </div>
 
     @if(myListings().length === 0){
     <app-empty-state icon="home_work" title="You haven't listed any properties yet"
@@ -16,7 +18,7 @@
     }
     @else{
     <div class="my-listings-grid">
-        @for(property of myListings(); track property){
+        @for(property of myListings(); track property.id){
         <app-property-card 
         [property]="property"
         [showFavIcon]="false"

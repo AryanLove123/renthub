@@ -16,4 +16,10 @@ export class StorageService {
     removeItem(key: string): void {
         localStorage.removeItem(key);
     }
+
+    seedIfEmpty<T>(key: string, seedValue: T): void {
+    if (localStorage.getItem(key) === null) {
+      this.setItem(key, seedValue);
+    }
+  }
 }

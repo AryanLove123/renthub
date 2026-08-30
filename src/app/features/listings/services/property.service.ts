@@ -10,6 +10,7 @@ import {
   paginatedProperties,
   sortProperties,
 } from '../../../shared/utils/property.utils';
+import { SEED_PROPERTIES } from '../../../data/seed-data';
 
 const PROPERTIES_KEY = 'renthub_properties';
 const DEFAULT_PAGE_SIZE = 6;
@@ -31,6 +32,11 @@ export class PropertyService {
   pagedProperties = computed(() => {
     return paginatedProperties(this.filteredAndSortedProperties(), this.currentPage(), this.pageSize);
   });
+
+  constructor(){
+    this.storageService.seedIfEmpty(PROPERTIES_KEY, SEED_PROPERTIES);
+    this.properties.set(this.loadProperties());
+  }
 
   loadProperties(): Property[] {
     return this.storageService.getItem<Property[]>(PROPERTIES_KEY) ?? [];

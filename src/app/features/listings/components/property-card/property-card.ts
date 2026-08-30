@@ -6,10 +6,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { EnumLabelPipe } from '../../../../shared/pipes/enum-label.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-property-card',
-  imports: [RouterLink, MatButtonModule, MatIconModule, MatCardModule, MatChipsModule, EnumLabelPipe],
+  imports: [RouterLink, MatButtonModule, MatIconModule, MatCardModule, MatChipsModule, EnumLabelPipe, MatTooltipModule],
   templateUrl: './property-card.html',
   styleUrl: './property-card.scss',
 })

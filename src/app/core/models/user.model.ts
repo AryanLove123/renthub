@@ -1,4 +1,4 @@
-export const enum UserRole {
+export enum UserRole {
   LANDLORD = 'LANDLORD',
   TENANT = 'TENANT',
 }

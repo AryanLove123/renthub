@@ -22,7 +22,7 @@
 
 .property-listing-section {
   max-width: 1200px;
-  margin: -50px auto 0;
+  margin: 50px auto 0;
   padding: 0 20px 40px;
   position: relative;
 }
@@ -64,6 +64,7 @@
 .listing-layout-sidebar{
   flex: 0 0 280px;
   position: sticky;
+  top: 84px;
 }
 
 .listing-layout-main{

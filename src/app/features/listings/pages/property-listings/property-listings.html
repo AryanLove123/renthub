@@ -18,45 +18,35 @@
           </mat-select>
         </mat-form-field>
         <button mat-stroked-button class="listing-toolbar-filter-btn" (click)="filtersOpen.set(!filtersOpen())">
-        <mat-icon aria-hidden="true">tune</mat-icon>
-        Filters
-      </button>
+          <mat-icon aria-hidden="true">tune</mat-icon>
+          Filters
+        </button>
       </div>
     </div>
 
     <div class="listing-layout">
-      <aside class="listing-layout-sidebar" [class.listing-layout-sidebar--oepn]="filtersOpen()">
-        <app-property-filters (onFiltersChanged)="onFiltersChangedHandler($event)" (closed)= "filtersOpen.set(false)"></app-property-filters>
+      <aside class="listing-layout-sidebar" [class.listing-layout-sidebar--open]="filtersOpen()">
+        <app-property-filters (onFiltersChanged)="onFiltersChangedHandler($event)"
+          (closed)="filtersOpen.set(false)"></app-property-filters>
       </aside>
 
       <div class="listing-layout-main">
-        <p class="listing-layout-count">{{totalResults()}}</p>
+        <p class="listing-layout-count">{{totalResults()}} propert{{ totalResults() === 1 ? 'y' : 'ies' }} found</p>
 
         @if(pagedProperties().length === 0){
-          <app-empty-state
-          icon="search-off"
-          titile="No listings matched your search"
-          message="Try adjusting your filters or search keywords"
-          ></app-empty-state>
+        <app-empty-state icon="search-off" titile="No listings matched your search"
+          message="Try adjusting your filters or search keywords"></app-empty-state>
         } @else {
-          <div class="listing-grid">
-            @for(property of pagedProperties(); track property.id){
-              <app-property-card
-              [property]="property"
-              [isFav]="favouriteIds().has(property.id)"
-              (onClickFavIcon)="onClickFavIconHandler($event)"
-              ></app-property-card>
-            }
-          </div>
+        <div class="listing-grid">
+          @for(property of pagedProperties(); track property.id){
+          <app-property-card [property]="property" [isFav]="favouriteIds().has(property.id)"
+            (onClickFavIcon)="onClickFavIconHandler($event)"></app-property-card>
+          }
+        </div>
+        <mat-paginator [length]="totalResults()" [pageSize]="pageSize" [pageIndex]="currentPage() - 1"
+          [hidePageSize]="true" (page)="onPageChange($event)"></mat-paginator>
         }
-      </div>
-      <mat-paginator
-        [length]="totalResults()"
-        [pageSize]="pageSize"
-        [pageIndex]="currentPage() - 1"
-        [hidePageSize]="true"
-        (page)="onPageChange($event)"
-      ></mat-paginator>
+      </div>8
     </div>
   </section>
 </div>

@@ -74,5 +74,6 @@ export interface Property {
   amenities: Amenity[];
   createdAt: string;
   updatedAt: string;
+  isFeatured?: boolean;
   availableFrom: string;
 }

@@ -1,64 +1,68 @@
-<div class="property-card">
-    <a [routerLink]="['/listings', property.id]">
-        <mat-card class="property-card-inner" appearance="outlined">
-            <div class="property-card-img-wrap">
-                <img class="property-card-image" [src]="property.images[0]" [alt]="'Photo of ' + property.title"
-                    loading="lazy" />
-                @if(property.propertyStatus == PropertyStatus.Rented){
-                <span>Rented</span>
-                }
-                @else{
-                <span>Available</span>
-                }
+<a class="property-card" [routerLink]="['/listings', property.id]">
+  <mat-card class="property-card-inner" appearance="outlined">
+    <div class="property-card-image-wrap">
+      <img
+        class="property-card-image"
+        [src]="property.images[0]"
+        [alt]="'Photo of ' + property.title"
+        loading="lazy"
+      />
 
-                @if(showFavIcon){
-                <button matIconButton (click)="onClickFavIcon.emit(property.id)">
-                    <mat-icon>{{isFav? 'favorite': 'favorite_border'}}</mat-icon>
-                </button>
-                }
-            </div>
+      @if (property.propertyStatus === PropertyStatus.Rented) {
+        <span class="property-card-badge property-card-badge--rented">Rented</span>
+      } @else {
+        <span class="property-card-badge property-card-badge--available">Available</span>
+      }
 
+      @if (showFavIcon) {
+        <button
+          mat-icon-button
+          class="property-card-favourite"
+          [class.property-card-favourite--active]="isFav"
+          (click)="onClickFavIconHandler($event)"
+          [attr.aria-pressed]="isFav"
+          [attr.aria-label]="isFav ? 'Remove from favourites' : 'Add to favourites'"
+          [matTooltip]="isFav ? 'Remove from favourites' : 'Add to favourites'"
+        >
+          <mat-icon aria-hidden="true">{{ isFav ? 'favorite' : 'favorite_border' }}</mat-icon>
+        </button>
+      }
+    </div>
 
-            <mat-card-content class="property-card-content">
-                <p class="property-card-rent">{{property.expectedRent}}<span>/month</span></p>
-                <h3 class="property-card-title">{{property.title}}</h3>
-                <p class="mat-card-location">
-                    <mat-icon>place</mat-icon>
-                    {{property.location.locality}} {{property.location.city}}
-                </p>
+    <mat-card-content class="property-card-content">
+      <p class="property-card-rent">
+        {{ property.expectedRent }}<span class="property-card-rent-suffix">/month</span>
+      </p>
+      <h3 class="property-card-title">{{ property.title }}</h3>
+      <p class="property-card-location">
+        <mat-icon aria-hidden="true" class="property-card-location-icon">place</mat-icon>
+        {{ property.location.locality }}, {{ property.location.city }}
+      </p>
 
-                <div class="property-card-area-details">
-                    <span>
-                        <mat-icon>bed</mat-icon>
-                        {{property.bedrooms}}
-                    </span>
-                    <span>
-                        <mat-icon>bath</mat-icon>
-                        {{property.bathrooms}}
-                    </span>
-                    <span>
-                        <mat-icon>square_foot</mat-icon>
-                        {{property.areaSqft}}
-                    </span>
-                </div>
+      <div class="property-card-area-details">
+        <span><mat-icon aria-hidden="true">bed</mat-icon>{{ property.bedrooms }} BHK</span>
+        <span><mat-icon aria-hidden="true">bathtub</mat-icon>{{ property.bathrooms }}</span>
+        <span><mat-icon aria-hidden="true">square_foot</mat-icon>{{ property.areaSqft }} sqft</span>
+      </div>
 
-                <mat-chip-set class="property-card-chip">
-                    <mat-chip>{{property.furnishedStatus | enumLabel}}</mat-chip>
-                </mat-chip-set>
-            </mat-card-content>
-            <mat-card-actions class="property-card-actions">
-                <a [routerLink]="['/listings', property.id]">View Listings</a>
-                @if(showLandlordActions){
-                <div class="property-card-owner-actions">
-                    <button>
-                        <mat-icon (click)="onEditClick($event)">edit</mat-icon>
-                    </button>
-                    <button>
-                        <mat-icon (click)="onDeleteClick($event)">delete</mat-icon>
-                    </button>
-                </div>
-                }
-            </mat-card-actions>
-        </mat-card>
-    </a>
-</div>
+      <mat-chip-set class="property-card-chip">
+        <mat-chip disabled>{{ property.furnishedStatus | enumLabel }}</mat-chip>
+      </mat-chip-set>
+    </mat-card-content>
+
+    <mat-card-actions class="property-card-actions">
+      <a mat-stroked-button color="primary" [routerLink]="['/listings', property.id]">View Details</a>
+
+      @if (showLandlordActions) {
+        <div class="property-card-owner-actions">
+          <button mat-icon-button (click)="onEditClick($event)" matTooltip="Edit listing" aria-label="Edit listing">
+            <mat-icon aria-hidden="true">edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="onDeleteClick($event)" matTooltip="Delete listing" aria-label="Delete listing">
+            <mat-icon aria-hidden="true">delete</mat-icon>
+          </button>
+        </div>
+      }
+    </mat-card-actions>
+  </mat-card>
+</a>

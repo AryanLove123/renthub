@@ -1,0 +1,73 @@
+<mat-toolbar class="navbar">
+  <a routerLink="/" class="navbar-icon" (click)="closeMobileMenu()">
+    <mat-icon aria-hidden="true">home_work</mat-icon>
+    <span>RentHub</span>
+  </a>
+
+  <nav class="navbar-links navbar-links--desktop" aria-label="Primary navigation">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+
+    @if (isAuthenticated()) {
+      @if (isLandlord()) {
+        <a routerLink="/landlord/listings" routerLinkActive="active">My Listings</a>
+      } @else {
+        <a routerLink="/favourites" routerLinkActive="active">Favourites</a>
+      }
+      <a routerLink="/inquiries" routerLinkActive="active">Inquiries</a>
+    }
+  </nav>
+
+  <div class="navbar-actions navbar-actions--desktop">
+    @if (isAuthenticated()) {
+      <button mat-button [matMenuTriggerFor]="userMenu" class="navbar-user-btn">
+        <mat-icon aria-hidden="true">account_circle</mat-icon>
+        {{ currentUser()?.firstName }}
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <div class="navbar-menu-role">{{ currentUser()?.role }}</div>
+        @if (isLandlord()) {
+          <a mat-menu-item routerLink="/landlord/listings/create">
+            <mat-icon aria-hidden="true">add_home</mat-icon>
+            <span>Create Listing</span>
+          </a>
+        }
+        <button mat-menu-item (click)="logout()">
+          <mat-icon aria-hidden="true">logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    } @else {
+      <a mat-button routerLink="/login">Login</a>
+      <a mat-flat-button color="primary" routerLink="/register">Register</a>
+    }
+  </div>
+
+  <button
+    mat-icon-button
+    class="navbar-hamburger"
+    (click)="toggleMobileMenu()"
+    [attr.aria-expanded]="isMobileMenuOpen()"
+    aria-label="Toggle navigation menu"
+  >
+    <mat-icon aria-hidden="true">{{ isMobileMenuOpen() ? 'close' : 'menu' }}</mat-icon>
+  </button>
+</mat-toolbar>
+
+@if (isMobileMenuOpen()) {
+  <nav class="navbar-mobile-panel" aria-label="Mobile navigation">
+    <a routerLink="/" (click)="closeMobileMenu()">Home</a>
+    @if (isAuthenticated()) {
+      @if (isLandlord()) {
+        <a routerLink="/landlord/listings" (click)="closeMobileMenu()">My Listings</a>
+        <a routerLink="/landlord/listings/create" (click)="closeMobileMenu()">Create Listing</a>
+      } @else {
+        <a routerLink="/favourites" (click)="closeMobileMenu()">Favourites</a>
+      }
+      <a routerLink="/inquiries" (click)="closeMobileMenu()">Inquiries</a>
+      <button class="navbar__mobile-logout" (click)="logout()">Logout ({{ currentUser()?.firstName }})</button>
+    } @else {
+      <a routerLink="/login" (click)="closeMobileMenu()">Login</a>
+      <a routerLink="/register" (click)="closeMobileMenu()">Register</a>
+    }
+  </nav>
+}

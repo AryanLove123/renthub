@@ -42,6 +42,7 @@ export class PropertyListingsComponent {
 
   onSearchHandler(query: SearchQuery){
     this.searchQuery = query;
+    this.applyCombinedFilters();
     console.log("this is my search query",this.searchQuery)
   }
 
