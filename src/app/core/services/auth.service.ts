@@ -1,6 +1,6 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { AuthSession, StoredCredentials, User, UserRole } from '../models/user.model';
-import { from, map, Observable, of } from 'rxjs';
+import { from, map, Observable, of, throwError } from 'rxjs';
 import { StorageService } from './storage.service';
 import { generateId, nowIso } from '../../shared/utils/id.utils';
 
@@ -26,7 +26,7 @@ const SESSION_KEY = 'renthub_session';
 })
 export class AuthService {
   private storageService = inject(StorageService);
-  currentUser = signal<User | null>(null);
+  currentUser = signal<User | null>(this.getStoredSession()?.user ?? null);
 
   isAuthenticated = computed(() => this.currentUser() !== null);
   isLandlord = computed(() => this.currentUser()?.role === UserRole.LANDLORD);
@@ -79,24 +79,29 @@ export class AuthService {
     const credentials = existingCredentials.find((c) => c.email === user.email);
 
     if (!credentials) {
-      throw new Error('Invalid credentials');
+      return throwError(() => new Error('Invalid credentials'));
     }
 
     const isMatch = this.verify(user.password, credentials.passwordHash);
 
     if (!isMatch) {
-      throw new Error('Invalid credentials');
+      return throwError(() => new Error('Invalid credentials'));
     }
 
     const loggedInUser = existingUsers.find((u) => u.id === credentials.userId);
 
     if (!loggedInUser) {
-      throw new Error('User not found');
+      return throwError(() => new Error('User not found'));
     }
 
     this.startSession(loggedInUser);
 
     return of(loggedInUser);
+  }
+
+  logout(): void{
+    this.storageService.removeItem(SESSION_KEY);
+    this.currentUser.set(null);
   }
 
   getUsers(): User[] {
@@ -133,5 +138,9 @@ export class AuthService {
 
   verify(password: string, storedHash: string): Observable<boolean> {
     return this.hash(password).pipe(map((hash) => hash === storedHash));
+  }
+
+  getStoredSession(): AuthSession | null {
+    return this.storageService.getItem<AuthSession>(SESSION_KEY);
   }
 }

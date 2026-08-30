@@ -33,6 +33,7 @@ import { Router } from '@angular/router';
 export class RegisterComponent {
   hidePassword = signal(true);
   hideConfirmPassword = signal(true);
+  errorMessage = signal<string | null>(null);
   router = inject(Router);
   authService = inject(AuthService);
   formBuilder = inject(FormBuilder);
@@ -46,6 +47,7 @@ export class RegisterComponent {
   });
 
   onSubmit() {
+    this.errorMessage.set(null);
     if (this.registerForm.valid) {
       console.log('Form submitted:', this.registerForm.value);
       const formValue = this.registerForm.getRawValue();
@@ -59,6 +61,9 @@ export class RegisterComponent {
       this.authService.register(userPayload).subscribe({
         next:(newUser) =>{
           this.router.navigateByUrl('/login');
+        },
+        error: (err: Error) =>{
+          this.errorMessage.set(err.message);
         }
       });
     } else {

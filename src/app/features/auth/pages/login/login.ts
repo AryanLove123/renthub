@@ -25,6 +25,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   hidePassword = signal(true);
+  errorMessage = signal<string | null>(null);
   router = inject(Router);
   authService = inject(AuthService);
   fb = inject(FormBuilder);
@@ -34,11 +35,16 @@ export class LoginComponent {
   });
 
   onSubmit(){
+    this.errorMessage.set(null);
     const {email, password} = this.loginForm.getRawValue();
     this.authService.login({email: email!, password:password!}).subscribe({
       next: (loggedInUser) =>{
         this.authService.startSession(loggedInUser);
         this.router.navigateByUrl('/');
+      },
+      error:(err: Error) =>{
+        console.log("I am here inside error")
+        this.errorMessage.set(err.message);
       }
     });
   }

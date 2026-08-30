@@ -26,6 +26,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatIconModule } from '@angular/material/icon';
 import { PropertyService } from '../../services/property.service';
 import { AuthService } from '../../../../core/services/auth.service';
+import { EnumLabelPipe } from '../../../../shared/pipes/enum-label.pipe';
 
 @Component({
   selector: 'app-property-form',
@@ -39,6 +40,7 @@ import { AuthService } from '../../../../core/services/auth.service';
     MatButtonModule,
     MatRadioModule,
     MatIconModule,
+    EnumLabelPipe
   ],
   templateUrl: './property-form.html',
   styleUrl: './property-form.scss',

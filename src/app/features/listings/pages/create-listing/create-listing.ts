@@ -34,7 +34,8 @@ export class CreateListingComponent {
   onConfirm(){
     const draftData = this.draft();
 
-    const landlordId = this.authService.currentUser()?.id || "Landlord123";
+    console.log("current user", this.authService.currentUser())
+    const landlordId = this.authService.currentUser()?.id;
 
     if(!draftData || !landlordId) return;
 

@@ -1,0 +1,32 @@
+.property-search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-start;
+  background: #fff;
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+}
+
+.property-search-field {
+  flex: 1 1 220px;
+}
+
+.property-search-submit {
+  height: 56px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+@media (max-width: 600px) {
+  .property-search-form {
+    flex-direction: column;
+  }
+  .property-search-field,
+  .property-search-submit {
+    width: 100%;
+  }
+}

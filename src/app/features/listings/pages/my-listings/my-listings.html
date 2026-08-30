@@ -1,1 +1,30 @@
-<p>my-listings works!</p>
+<div class="my-listings-page">
+    <div class="my-listings-header">
+        <h1>My Listings</h1>
+        <p>Manage the properties you've listed on RentHub.</p>
+    </div>
+    <a mat-flat-button routerLink="/landlord/listings/create">
+        <mat-icon>add_home</mat-icon>
+        Create Listing
+    </a>
+
+    @if(myListings().length === 0){
+    <app-empty-state icon="home_work" title="You haven't listed any properties yet"
+        message="Create your first listing to start receiving inquiries from renters.">
+        <a mat-flat-button color="primary" routerLink="/landlord/listings/create">Create Your First Listing</a>
+    </app-empty-state>
+    }
+    @else{
+    <div class="my-listings-grid">
+        @for(property of myListings(); track property){
+        <app-property-card 
+        [property]="property"
+        [showFavIcon]="false"
+        [showLandlordActions]="true"
+        (editRequested)="onEdit($event)"
+        (deleteRequested)="onDelete($event)"
+        ></app-property-card>
+        }
+    </div>
+    }
+</div>

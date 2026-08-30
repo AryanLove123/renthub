@@ -1,0 +1,24 @@
+<div class="favourites-page">
+  <h1>Your Favourites</h1>
+  <p class="favourites-page__subtitle">Properties you've saved for later.</p>
+
+  @if (favouriteProperties().length === 0) {
+    <app-empty-state
+      icon="favorite_border"
+      title="No favourites yet"
+      message="Tap the heart icon on any listing to save it here."
+    >
+      <a mat-flat-button color="primary" routerLink="/">Browse Listings</a>
+    </app-empty-state>
+  } @else {
+    <div class="favourites-page__grid">
+      @for (property of favouriteProperties(); track property.id) {
+        <app-property-card
+          [property]="property"
+          [isFav]="true"
+          (onClickFavIcon)="onFavouriteToggled($event)"
+        ></app-property-card>
+      }
+    </div>
+  }
+</div>

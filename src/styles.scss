@@ -5,6 +5,8 @@
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
+@include mat.core();
+
 html {
   height: 100%;
   @include mat.theme(
@@ -37,3 +39,18 @@ body {
   height: 100%;
 }
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --rh-primary: #0f766e;
+  --rh-primary-light: #14b8a6;
+  --rh-accent: #f97316;
+  --rh-success: #16a34a;
+  --rh-error: #dc2626;
+  --rh-surface: #ffffff;
+  --rh-border: #e2e8f0;
+  --rh-text-primary: #0f172a;
+  --rh-text-secondary: #64748b;
+}
+
+* {
+  box-sizing: border-box;
+}

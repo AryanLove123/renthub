@@ -1,18 +1,20 @@
-.login-page{
+.login-page {
+    min-height: calc(100vh - 64px);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 36px 16px;
+    padding: 32px 16px;
+    background: linear-gradient(160deg, var(--rh-bg) 0%, #eef2ff 100%);
 }
 
-.login-card{
+.login-card {
     width: 100%;
     max-width: 420px;
     padding: 26px 28px;
     border-radius: 18px;
 }
 
-.login-icon{
+.login-icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -20,21 +22,39 @@
     font-weight: 700;
     font-size: 1.2rem;
     margin-bottom: 16px;
+    color: var(--rh-primary);
 }
 
-.login-title{
+.login-title {
     font-size: 1.2rem;
     margin: 0 0 4px;
 }
 
-.login-subtitle{
+.login-subtitle {
     font-size: 0.9rem;
-    color: #666;
+    color: var(--rh-text-secondary);
     margin: 0 0 26px;
 }
 
-.login-form{
+.login-card-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+}
+
+.login-form {
     display: flex;
     flex-direction: column;
     gap: 4px;
+}
+
+.login-submit {
+  height: 46px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -1,0 +1,70 @@
+<form class="property-filters-page" [formGroup]="propertyFilterForm">
+  <div class="property-filters-header">
+    <h3>Filters</h3>
+    <button mat-icon-button type="button" class="property-filters__close" (click)="closed.emit()" aria-label="Close filters">
+      <mat-icon aria-hidden="true">close</mat-icon>
+    </button>
+  </div>
+
+  <div class="property-filters-section">
+    <span class="property-filters-label">Price range (₹/month)</span>
+    <div class="property-filters-row">
+      <mat-form-field appearance="outline" class="property-filters-half">
+        <mat-label>Min</mat-label>
+        <input matInput type="number" min="0" formControlName="minRent" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="property-filters-half">
+        <mat-label>Max</mat-label>
+        <input matInput type="number" min="0" formControlName="maxRent" />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <mat-form-field appearance="outline" class="property-filters-full">
+    <mat-label>Property type</mat-label>
+    <mat-select formControlName="propertyType">
+      <mat-option [value]="null">Any</mat-option>
+      @for (type of propertyTypeOptions; track type) {
+        <mat-option [value]="type">{{ type | enumLabel }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="property-filters-full">
+    <mat-label>Bedrooms</mat-label>
+    <mat-select formControlName="bedrooms">
+      <mat-option [value]="null">Any</mat-option>
+      @for (count of bedroomOptions; track count) {
+        <mat-option [value]="count">{{ count }} BHK</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="property-filters-full">
+    <mat-label>Furnishing</mat-label>
+    <mat-select formControlName="furnishingStatus">
+      <mat-option [value]="null">Any</mat-option>
+      @for (status of furnishedStatusOptions; track status) {
+        <mat-option [value]="status">{{ status | enumLabel}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <div class="property-filters-section">
+    <span class="property-filters-label">Amenities</span>
+    <div class="property-filters-amenities">
+      @for (amenity of amenityOptions; track amenity) {
+        <mat-checkbox
+          [checked]="isAmenityChecked(amenity)"
+          (change)="toggleAmenity(amenity, $event.checked)"
+        >
+          {{ amenity }}
+        </mat-checkbox>
+      }
+    </div>
+  </div>
+
+  <button mat-stroked-button type="button" class="property-filters-clear" (click)="clearFilters()">
+    Clear all filters
+  </button>
+</form>

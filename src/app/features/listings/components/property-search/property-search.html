@@ -1,0 +1,18 @@
+<form class="property-search-form" [formGroup]="searchForm" (ngSubmit)="emitSearch()">
+    <mat-form-field appearance="outline" class="property-search-field">
+        <mat-label>Search by Keyword</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput type="text" formControlName="keyword">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="property-search-field">
+        <mat-label>City</mat-label>
+        <mat-icon matPrefix>location_city</mat-icon>
+        <input matInput type="text" formControlName="city">
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" type="submit" class="property-search-submit">
+        <mat-icon>search</mat-icon>
+    </button>
+
+</form>

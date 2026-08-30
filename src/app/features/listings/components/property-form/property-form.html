@@ -1,7 +1,7 @@
 <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()" class="property-form">
     <fieldset class="field-group">
-        <legend>Basic Information</legend>
-        <mat-form-field appearance="outline">
+        <legend class="field-group-title">Basic Information</legend>
+        <mat-form-field appearance="outline" class="property-form-full">
             <mat-label>Title</mat-label>
             <input matInput placeholder="Enter property title" formControlName="title" />
             @if (propertyForm.controls.title.touched && propertyForm.controls.title.hasError('required')) {
@@ -12,9 +12,10 @@
             }
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="property-form-full">
             <mat-label>Description</mat-label>
-            <textarea matInput placeholder="Enter property description" formControlName="description"></textarea>
+            <textarea matInput placeholder="Enter property description" formControlName="description"
+                maxlength="1000"></textarea>
             @if (propertyForm.controls.description.touched && propertyForm.controls.description.hasError('required')) {
             <mat-error>Description is required</mat-error>
             }
@@ -25,146 +26,172 @@
     </fieldset>
 
     <fieldset formGroupName="location" class="field-group">
-        <legend>Location</legend>
-        <mat-form-field appearance="outline">
-            <mat-label>City</mat-label>
-            <input matInput placeholder="Enter city" formControlName="city" />
-            @if (propertyForm.controls.location.controls.city.touched && propertyForm.controls.location.controls.city.hasError('required')) {
-            <mat-error>City is required</mat-error>
-            }
-        </mat-form-field>
+        <legend class="field-group-title">Location</legend>
+        <div class="property-form-row">
+            <mat-form-field appearance="outline" class="property-form-half">
+                <mat-label>City</mat-label>
+                <input matInput placeholder="Enter city" formControlName="city" />
+                @if (propertyForm.controls.location.controls.city.touched &&
+                propertyForm.controls.location.controls.city.hasError('required')) {
+                <mat-error>City is required</mat-error>
+                }
+            </mat-form-field>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Locality</mat-label>
-            <input matInput placeholder="Enter locality" formControlName="locality" />
-            @if (propertyForm.controls.location.controls.locality.touched && propertyForm.controls.location.controls.locality.hasError('required')) {
-            <mat-error>Locality is required</mat-error>
-            }
-        </mat-form-field>
+            <mat-form-field appearance="outline" class="property-form-half">
+                <mat-label>Locality</mat-label>
+                <input matInput placeholder="Enter locality" formControlName="locality" />
+                @if (propertyForm.controls.location.controls.locality.touched &&
+                propertyForm.controls.location.controls.locality.hasError('required')) {
+                <mat-error>Locality is required</mat-error>
+                }
+            </mat-form-field>
+        </div>
 
-        <mat-form-field appearance="outline">
+
+        <mat-form-field appearance="outline" class="property-form-full">
             <mat-label>Address</mat-label>
             <input matInput placeholder="Enter property address" formControlName="address" />
-            @if (propertyForm.controls.location.controls.address.touched && propertyForm.controls.location.controls.address.hasError('required')) {
+            @if (propertyForm.controls.location.controls.address.touched &&
+            propertyForm.controls.location.controls.address.hasError('required')) {
             <mat-error>Address is required</mat-error>
             }
         </mat-form-field>
     </fieldset>
 
     <fieldset class="field-group">
-        <legend>Rental Details</legend>
-        <mat-form-field appearance="outline">
-            <mat-label>Expected Rent</mat-label>
-            <input matInput type="number" placeholder="Enter expected rent" formControlName="expectedRent" />
-            @if (propertyForm.controls.expectedRent.touched && propertyForm.controls.expectedRent.hasError('required'))
-            {
-            <mat-error>Expected rent is required</mat-error>
-            }
-            @if(propertyForm.controls.expectedRent.touched && propertyForm.controls.expectedRent.hasError('min')) {
-            <mat-error>Expected rent must be a positive number</mat-error>
-            }
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Security Deposit</mat-label>
-            <input matInput type="number" placeholder="Enter security deposit" formControlName="securityDeposit" />
-            @if(propertyForm.controls.securityDeposit.touched && propertyForm.controls.securityDeposit.hasError('min'))
-            {
-            <mat-error>Security deposit must be a positive number</mat-error>
-            }
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Lease Type</mat-label>
-            <mat-select formControlName="leaseType">
-                <mat-option *ngFor="let type of leaseTypes" [value]="type">{{ type }}</mat-option>
-            </mat-select>
-        </mat-form-field>
+        <legend class="field-group-title">Rental Details</legend>
+        <div class="property-form-row">
+            <mat-form-field appearance="outline" class="property-form-half">
+                <mat-label>Expected Rent</mat-label>
+                <input matInput type="number" placeholder="Enter expected rent" formControlName="expectedRent" />
+                @if (propertyForm.controls.expectedRent.touched &&
+                propertyForm.controls.expectedRent.hasError('required'))
+                {
+                <mat-error>Expected rent is required</mat-error>
+                }
+                @if(propertyForm.controls.expectedRent.touched && propertyForm.controls.expectedRent.hasError('min')) {
+                <mat-error>Expected rent must be a positive number</mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="property-form-half">
+                <mat-label>Security Deposit</mat-label>
+                <input matInput type="number" placeholder="Enter security deposit" formControlName="securityDeposit" />
+                @if(propertyForm.controls.securityDeposit.touched &&
+                propertyForm.controls.securityDeposit.hasError('min'))
+                {
+                <mat-error>Security deposit must be a positive number</mat-error>
+                }
+            </mat-form-field>
+        </div>
 
-        <mat-checkbox formControlName="isRentNegotiable">Is Rent Negotiable?</mat-checkbox>
+        <div class="property-from-row">
+            <mat-form-field appearance="outline" class="property-form-half">
+                <mat-label>Lease Type</mat-label>
+                <mat-select formControlName="leaseType">
+                    <mat-option *ngFor="let type of leaseTypes" [value]="type">{{ type | enumLabel}}</mat-option>
+                </mat-select>
+            </mat-form-field>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Available from</mat-label>
-            <input matInput type="date" formControlName="availableFrom">
-            @if(propertyForm.controls.availableFrom.touched &&
-            propertyForm.controls.availableFrom.hasError('required')){
-            <mat-error>Please choose a date.</mat-error>
-            }
-        </mat-form-field>
+            <mat-form-field appearance="outline" class="property-form-half">
+                <mat-label>Available from</mat-label>
+                <input matInput type="date" formControlName="availableFrom">
+                @if(propertyForm.controls.availableFrom.touched &&
+                propertyForm.controls.availableFrom.hasError('required')){
+                <mat-error>Please choose a date.</mat-error>
+                }
+            </mat-form-field>
+        </div>
 
-        <mat-checkbox formControlName="isSharedProperty">Is SharedProperty?</mat-checkbox>
+        <div class="property-form-row">
+            <mat-checkbox class="property-form-half" formControlName="isRentNegotiable">Is Rent
+                Negotiable?</mat-checkbox>
+
+            <mat-checkbox class="property-form-half" formControlName="isSharedProperty">Is
+                SharedProperty?</mat-checkbox>
+        </div>
     </fieldset>
 
     <fieldset class="field-group">
-        <legend>Property Details</legend>
-        <mat-form-field appearance="outline">
-            <mat-label>Property Type</mat-label>
-            <mat-select formControlName="propertyType">
-                <mat-option *ngFor="let type of propertyTypes" [value]="type">{{ type }}</mat-option>
-            </mat-select>
-            @if (propertyForm.controls.propertyType.touched && propertyForm.controls.propertyType.hasError('required'))
-            {
-            <mat-error>Property type is required</mat-error>
-            }
-        </mat-form-field>
+        <legend class="field-group-title">Property Details</legend>
 
-        <mat-form-field class="field-group" appearance="outline">
-            <mat-label>Bedrooms</mat-label>
-            <input matInput type="number" formControlName="bedrooms">
-        </mat-form-field>
+        <div class="property-form-row">
+            <mat-form-field appearance="outline" class="property-form-half">
+                <mat-label>Property Type</mat-label>
+                <mat-select formControlName="propertyType">
+                    <mat-option *ngFor="let type of propertyTypes" [value]="type">{{ type | enumLabel}}</mat-option>
+                </mat-select>
+                @if (propertyForm.controls.propertyType.touched &&
+                propertyForm.controls.propertyType.hasError('required'))
+                {
+                <mat-error>Property type is required</mat-error>
+                }
+            </mat-form-field>
 
-        <mat-form-field class="field-group" appearance="outline">
-            <mat-label>Bathrooms</mat-label>
-            <input matInput type="number" formControlName="bathrooms">
-        </mat-form-field>
+            <mat-form-field appearance="outline" class="property-form-half">
+                <mat-label>Furnsihed Status</mat-label>
+                <mat-select formControlName="furnishedStatus">
+                    <mat-option *ngFor="let type of furnishedStatus" [value]="type">{{ type | enumLabel}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
 
-        <mat-form-field class="field-group" appearance="outline">
-            <mat-label>Area Sqft</mat-label>
-            <input matInput type="number" formControlName="areaSqft">
-            @if (propertyForm.controls.areaSqft.touched && propertyForm.controls.areaSqft.hasError('required')){
-            <mat-error>Area is required.</mat-error>
-            }
-            @if (propertyForm.controls.areaSqft.touched && propertyForm.controls.areaSqft.hasError('min')){
-            <mat-error>Minimum area required is 100 sqft</mat-error>
-            }
-        </mat-form-field>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Furnsihed Status</mat-label>
-            <mat-select formControlName="furnishedStatus">
-                <mat-option *ngFor="let type of furnishedStatus" [value]="type">{{ type }}</mat-option>
-            </mat-select>
-        </mat-form-field>
+        <div class="property-form-row">
+            <mat-form-field class="field-group" appearance="outline" class="property-form-third">
+                <mat-label>Bedrooms</mat-label>
+                <input matInput type="number" formControlName="bedrooms">
+            </mat-form-field>
+
+            <mat-form-field class="field-group" appearance="outline" class="property-form-third">
+                <mat-label>Bathrooms</mat-label>
+                <input matInput type="number" formControlName="bathrooms">
+            </mat-form-field>
+
+            <mat-form-field class="field-group" appearance="outline" class="property-form-third">
+                <mat-label>Area Sqft</mat-label>
+                <input matInput type="number" formControlName="areaSqft">
+                @if (propertyForm.controls.areaSqft.touched && propertyForm.controls.areaSqft.hasError('required')){
+                <mat-error>Area is required.</mat-error>
+                }
+                @if (propertyForm.controls.areaSqft.touched && propertyForm.controls.areaSqft.hasError('min')){
+                <mat-error>Minimum area required is 100 sqft</mat-error>
+                }
+            </mat-form-field>
+        </div>
     </fieldset>
 
-    <fieldset>
-        <h3>Amenities Included</h3>
-        <div class="amenities-grid">
+    <fieldset class="field-group">
+        <h3 class="field-group-title">Amenities Included</h3>
+        <div class="property-form-grid">
             @for(item of amenityOptions; track item){
-                <mat-checkbox [checked]="isAmenityChecked(item)" (change)="toggleAmenity(item,$event.checked)">{{item}}</mat-checkbox>
+            <mat-checkbox [checked]="isAmenityChecked(item)"
+                (change)="toggleAmenity(item,$event.checked)">{{item}}</mat-checkbox>
             }
         </div>
     </fieldset>
 
-    <fieldset>
-        <h3>Preferences</h3>
-        <mat-radio-group formControlName="vegetarianPreference">
-            <mat-radio-button *ngFor="let type of vegetarianPreferences" [value]="type">{{type}}</mat-radio-button>
+    <fieldset class="field-group">
+        <h3 class="field-group-title">Preferences</h3>
+        <div class="property-form-grid">
+            <mat-radio-group formControlName="vegetarianPreference">
+            <mat-radio-button *ngFor="let type of vegetarianPreferences" [value]="type">{{type | enumLabel}}</mat-radio-button>
         </mat-radio-group>
+        </div>
     </fieldset>
 
-    <fieldset>
-        <h3>Images</h3>
-        <p>Paste one or more image URLs separated by commas</p>
-        <mat-form-field appearance="outline">
+    <fieldset class="field-group">
+        <h3 class="field-group-title">Images</h3>
+        <p class="property-form-hint">Paste one or more image URLs separated by commas</p>
+        <mat-form-field appearance="outline" class="property-form-full">
             <mat-label>Image URLs</mat-label>
-            <textarea matInput
-            [value] = "imageUrlInput"
-            (input) = "onImageUrlInputChange($event)"
-            ></textarea>
+            <textarea matInput [value]="imageUrlInput" (input)="onImageUrlInputChange($event)"></textarea>
             @if(propertyForm.controls.images.hasError('required')){
             <mat-error>At least one image is required</mat-error>
             }
         </mat-form-field>
     </fieldset>
 
-    <button mat-flat-button color="primary" type="submit">Submit</button>
+    <div class="property-form-submit-row">
+    <button class="property-form-submit-btn" mat-flat-button color="primary" type="submit">Submit</button>
+    </div>
 </form>

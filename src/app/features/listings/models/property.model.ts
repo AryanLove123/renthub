@@ -33,7 +33,6 @@ export enum VegetarianPreference {
 export enum PropertyStatus {
   Available = 'Available',
   Rented = 'Rented',
-  UnderMaintenance = 'Under Maintenance',
 }
 
 export const amenitiesList = [

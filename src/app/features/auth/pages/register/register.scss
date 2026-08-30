@@ -1,4 +1,5 @@
 .register-page{
+    min-height: calc(100vh - 64px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -20,6 +21,7 @@
     font-weight: 700;
     font-size: 1.2rem;
     margin-bottom: 16px;
+    color: var(--rh-primary);
 }
 
 .register-title{

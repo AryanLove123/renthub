@@ -1,0 +1,62 @@
+<div class="property-listing-page">
+  <div class="property-listing-header">
+    <h1 class="property-listing-title">Find your next home, without the hassle</h1>
+    <p class="property-listing-subtitle">Search verified listings, chat with landlords, and move in with confidence.</p>
+    <app-property-search (clickSearch)="onSearchHandler($event)"></app-property-search>
+  </div>
+
+  <section class="property-listing-section" id="listing-results">
+    <div class="listing-toolbar">
+      <h2 class="listing-toolbar-title">All Listings</h2>
+      <div class="listing-toolbar-controls">
+        <mat-form-field appearance="outline" class="listing-toolbar-sort">
+          <mat-label>Sort by</mat-label>
+          <mat-select [value]="sortOption()" (selectionChange)="onSortChange($event.value)">
+            <mat-option value="newest">Newest first</mat-option>
+            <mat-option value="price_asc">Rent: Low to high</mat-option>
+            <mat-option value="price_desc">Rent: High to low</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-stroked-button class="listing-toolbar-filter-btn" (click)="filtersOpen.set(!filtersOpen())">
+        <mat-icon aria-hidden="true">tune</mat-icon>
+        Filters
+      </button>
+      </div>
+    </div>
+
+    <div class="listing-layout">
+      <aside class="listing-layout-sidebar" [class.listing-layout-sidebar--oepn]="filtersOpen()">
+        <app-property-filters (onFiltersChanged)="onFiltersChangedHandler($event)" (closed)= "filtersOpen.set(false)"></app-property-filters>
+      </aside>
+
+      <div class="listing-layout-main">
+        <p class="listing-layout-count">{{totalResults()}}</p>
+
+        @if(pagedProperties().length === 0){
+          <app-empty-state
+          icon="search-off"
+          titile="No listings matched your search"
+          message="Try adjusting your filters or search keywords"
+          ></app-empty-state>
+        } @else {
+          <div class="listing-grid">
+            @for(property of pagedProperties(); track property.id){
+              <app-property-card
+              [property]="property"
+              [isFav]="favouriteIds().has(property.id)"
+              (onClickFavIcon)="onClickFavIconHandler($event)"
+              ></app-property-card>
+            }
+          </div>
+        }
+      </div>
+      <mat-paginator
+        [length]="totalResults()"
+        [pageSize]="pageSize"
+        [pageIndex]="currentPage() - 1"
+        [hidePageSize]="true"
+        (page)="onPageChange($event)"
+      ></mat-paginator>
+    </div>
+  </section>
+</div>

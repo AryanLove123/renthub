@@ -4,6 +4,12 @@
         <span>This is a preview. Your listing has not been published yet.</span>
     </div>
 
+    <div class="preview-images">
+        @for (url of draft.images; track url) {
+        <img [src]="url" [alt]="draft.title" />
+        }
+    </div>
+
     <h2 class="preview-title">{{draft.title}}</h2>
     <p class="preview-location">
         <mat-icon>place</mat-icon>
@@ -13,10 +19,10 @@
     <p class="preview-rent">
         {{draft.expectedRent}}<span>/month</span>
         @if(draft.isRentNegotiable){
-            <span>Negotiable</span>
+        <span>Negotiable</span>
         }
         @if(draft.isSharedProperty){
-            <span>SharedProperty</span>
+        <span>SharedProperty</span>
         }
     </p>
 
@@ -42,7 +48,7 @@
         <h2>Amenities</h2>
         <mat-chip-set>
             @for(item of draft.amenities; track item){
-                <mat-chip>{{item}}</mat-chip>
+            <mat-chip>{{item}}</mat-chip>
             }
         </mat-chip-set>
     </section>
