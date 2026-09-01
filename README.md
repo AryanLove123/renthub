@@ -1,59 +1,89 @@
-# Renthub
+# RentHub
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.21.
+RentHub is a web-based apartment rental platform built with Angular. It lets landlords list properties and lets renters browse, favourite, and inquire about them through private conversations — all built as part of the Angular Assignment (Nagarro).
 
-## Development server
+## Live Demo
 
-To start a local development server, run:
+- **Deployed App:** [ADD_DEPLOYED_URL_HERE]
+- **GitHub Repository:** https://github.com/AryanLove123/renthub
 
-```bash
-ng serve
-```
+## Demo Credentials
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+The app seeds a set of demo users into `localStorage` on first load. Use any of the following to log in:
 
-## Code scaffolding
+| Role     | Email                          | Password      |
+|----------|---------------------------------|---------------|
+| Landlord | landlord@renthub.demo           | RentHub@123   |
+| Landlord | priya.landlord@renthub.demo     | RentHub@123   |
+| Renter   | renter@renthub.demo             | RentHub@123   |
+| Renter   | sneha.renter@renthub.demo       | RentHub@123   |
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+You can also register a new account from the app itself.
 
-```bash
-ng generate component component-name
-```
+## Features Implemented
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- **Authentication** — Registration and login with passwords hashed (SHA-256) before being stored in `localStorage`; no plaintext passwords are ever persisted.
+- **Auth Guards** — Protected routes are guarded so only authenticated users can access listing creation, inquiries, and other restricted pages.
+- **Form Validation** — All forms (login, registration, create listing) use Angular Reactive Forms with validation and inline error messages.
+- **Apartment Listings** — Landlords can create, view, and manage property listings with details, amenities, and photos.
+- **Preview Before Submit (Bonus)** — When creating a new listing, users get a dedicated preview screen to review all entered details before final submission.
+- **Search & Filter, Pagination** — Listings can be searched/filtered and are paginated for easy browsing.
+- **Favourites** — Renters can mark listings as favourites to revisit later.
+- **Inquiries & Private Chat** — Renters can send inquiries to landlords per property; each (property, renter) pair gets its own private conversation thread. Both landlords and renters can view their inquiry list and continue the conversation, with status (Pending / Responded / Closed) tracked per thread.
+- **Data Seeding** — Demo users and properties are automatically seeded into `localStorage` on first app load, so the app is usable immediately without manual setup.
+- **Reusable Architecture** — Feature-based folder structure with shared/reusable components, services, and pipes across the app.
+- **Styling** — SCSS used throughout for component and page styling.
 
-```bash
-ng generate --help
-```
+## Tech Stack
 
-## Building
+- Angular (standalone components)
+- Angular Material
+- Reactive Forms
+- SCSS
+- RxJS
+- `localStorage` as the persistence layer (no backend)
 
-To build the project run:
+## Running the Project Locally
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (LTS version recommended)
+- Angular CLI (latest version):
+  ```bash
+  npm install -g @angular/cli
+  ```
+
+### Setup
+
+1. Clone the repository:
+   ```bash
+   git clone [ADD_GITHUB_REPO_URL_HERE]
+   cd renthub
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   ng serve
+   ```
+
+4. Open your browser and navigate to:
+   ```
+   http://localhost:4200
+   ```
+
+5. Log in using any of the [demo credentials](#demo-credentials) above, or register a new account.
+
+> **Note:** The app seeds demo data into your browser's `localStorage` on first load. If you want a completely fresh state, clear `localStorage` for `localhost:4200` and reload.
+
+## Building for Production
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Build artifacts will be output to the `dist/` directory.

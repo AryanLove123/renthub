@@ -1,6 +1,6 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { AuthSession, StoredCredentials, User, UserRole } from '../models/user.model';
-import { forkJoin, from, map, Observable, of, throwError } from 'rxjs';
+import { forkJoin, from, map, Observable, of, switchMap, throwError } from 'rxjs';
 import { StorageService } from './storage.service';
 import { generateId, nowIso } from '../../shared/utils/id.utils';
 import { SEED_CREDENTIALS, SEED_USERS } from '../../data/seed-data';
@@ -104,31 +104,31 @@ export class AuthService {
   }
 
   login(user: LoginUser): Observable<User> {
-    const existingUsers = this.getUsers();
-    const existingCredentials = this.getCredentials();
+  const existingUsers = this.getUsers();
+  const existingCredentials = this.getCredentials();
 
-    const credentials = existingCredentials.find((c) => c.email === user.email);
+  const credentials = existingCredentials.find((c) => c.email === user.email);
 
-    if (!credentials) {
-      return throwError(() => new Error('Invalid credentials'));
-    }
-
-    const isMatch = this.verify(user.password, credentials.passwordHash);
-
-    if (!isMatch) {
-      return throwError(() => new Error('Invalid credentials'));
-    }
-
-    const loggedInUser = existingUsers.find((u) => u.id === credentials.userId);
-
-    if (!loggedInUser) {
-      return throwError(() => new Error('User not found'));
-    }
-
-    this.startSession(loggedInUser);
-
-    return of(loggedInUser);
+  if (!credentials) {
+    return throwError(() => new Error('Invalid credentials'));
   }
+
+  return this.verify(user.password, credentials.passwordHash).pipe(
+    switchMap((isMatch) => {
+      if (!isMatch) {
+        return throwError(() => new Error('Invalid credentials'));
+      }
+
+      const loggedInUser = existingUsers.find((u) => u.id === credentials.userId);
+      if (!loggedInUser) {
+        return throwError(() => new Error('User not found'));
+      }
+
+      this.startSession(loggedInUser);
+      return of(loggedInUser);
+    }),
+  );
+}
 
   logout(): void{
     this.storageService.removeItem(SESSION_KEY);

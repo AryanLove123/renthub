@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
     {
@@ -15,6 +16,7 @@ export const routes: Routes = [
     },
     {
         path: 'favourites',
+        canActivate: [authGuard],
         loadComponent: () => import('./features/favourites/pages/favourites/favourites').then(m => m.FavouritesComponent)
     },
     {
@@ -23,22 +25,27 @@ export const routes: Routes = [
     },
     {
         path: 'landlord/listings',
+        canActivate: [authGuard],
         loadComponent: () => import('./features/listings/pages/my-listings/my-listings').then(m => m.MyListingsComponent)
     },
     {
         path: 'landlord/listings/create',
+        canActivate: [authGuard],
         loadComponent: () => import('./features/listings/pages/create-listing/create-listing').then(m => m.CreateListingComponent)
     },
     {
         path: 'landlord/listings/:id/edit',
+        canActivate: [authGuard],
         loadComponent: () => import('./features/listings/pages/edit-listing/edit-listing').then(m =>m.EditListingComponent)
     },
     {
         path: 'inquiries',
+        canActivate: [authGuard],
         loadComponent: () => import('./features/inquiries/pages/inquiry-list/inquiry-list').then(m => m.InquiryListComponent)
     },
     {
         path: 'inquiries/:inquiryId',
+        canActivate: [authGuard],
         loadComponent: () => import('./features/inquiries/pages/inquiry-conversation/inquiry-conversation').then(m => m.InquiryConversationComponent)
     },
     
