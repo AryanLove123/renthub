@@ -14,6 +14,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/auth/pages/login/login').then(m => m.LoginComponent)
     },
     {
+        path: 'favourites',
+        loadComponent: () => import('./features/favourites/pages/favourites/favourites').then(m => m.FavouritesComponent)
+    },
+    {
         path: 'listings/:id',
         loadComponent: () => import('./features/listings/pages/listing-detail/listing-detail').then(m => m.ListingDetailComponent)
     },
@@ -25,5 +29,9 @@ export const routes: Routes = [
         path: 'landlord/listings/create',
         loadComponent: () => import('./features/listings/pages/create-listing/create-listing').then(m => m.CreateListingComponent)
     },
+    {
+        path: 'landlord/listings/:id/edit',
+        loadComponent: () => import('./features/listings/pages/edit-listing/edit-listing').then(m =>m.EditListingComponent)
+    }
     
 ];

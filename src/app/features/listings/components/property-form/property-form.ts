@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -40,7 +40,7 @@ import { EnumLabelPipe } from '../../../../shared/pipes/enum-label.pipe';
     MatButtonModule,
     MatRadioModule,
     MatIconModule,
-    EnumLabelPipe
+    EnumLabelPipe,
   ],
   templateUrl: './property-form.html',
   styleUrl: './property-form.scss',
@@ -61,7 +61,19 @@ export class PropertyFormComponent {
   propertyService = inject(PropertyService);
   authService = inject(AuthService);
 
-  propertyForm: PropertyFormGroup = buildPropertyFormData(this.fb, this.initialData);
+  // propertyForm: PropertyFormGroup = buildPropertyFormData(this.fb, this.initialData);
+
+  propertyForm!: PropertyFormGroup;
+
+  ngOnInit(): void {
+    // Construct form with initialData now guaranteed by @if in parent
+    this.propertyForm = buildPropertyFormData(this.fb, this.initialData);
+
+    // Sync image text area
+    if (this.initialData?.images?.length) {
+      this.imageUrlInput = this.initialData.images.join(', ');
+    }
+  }
 
   isAmenityChecked(amenity: Amenity): boolean {
     return (this.propertyForm.controls.amenities.value ?? []).includes(amenity);
@@ -102,7 +114,7 @@ export class PropertyFormComponent {
     // const updated = [...this.propertyService.loadProperties(), newProperty];
     // this.propertyService.persistProperties(updated);
     const draftData = this.propertyForm.getRawValue() as PropertyDraft;
-    console.log("this is my draftdata",draftData);
+    console.log('this is my draftdata', draftData);
     this.previewRequested.emit(draftData);
   }
 }

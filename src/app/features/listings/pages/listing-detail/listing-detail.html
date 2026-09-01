@@ -1,1 +1,133 @@
-<p>listing-detail works!</p>
+@if (property(); as property){
+<div class="detail-page">
+    <a routerLink="/" class="detail-page-back">
+        <mat-icon>arrow_back</mat-icon>
+        Back to listings
+    </a>
+
+    <div class="detail-layout">
+        <div class="detail-layout-main">
+            <div class="detail-header">
+                <div>
+                    <span class="detail-header-status"
+                        [class.detail-header-status--rented]="property.propertyStatus === PropertyStatus.Rented">
+                        {{ property.propertyStatus === PropertyStatus.Rented ? 'Rented' : 'Available' }}
+                    </span>
+                    <h1 class="detail-header-title">{{ property.title }}</h1>
+                    <p class="detail-header-location">
+                        <mat-icon aria-hidden="true">place</mat-icon>
+                        {{ property.location.address }}, {{ property.location.locality }}, {{ property.location.city }}
+                    </p>
+                </div>
+
+                <button mat-icon-button class="detail-header-favorite"
+                    [class.detail-header-favorite--active]="isFavourite()" (click)="toggleFavourite()">
+                    <mat-icon aria-hidden="true">{{ isFavourite() ? 'favorite' : 'favorite_border' }}</mat-icon>
+                </button>
+            </div>
+
+            <section class="detail-section">
+                <h2>Description</h2>
+                <p class="detail-description">{{ property.description }}</p>
+            </section>
+
+            <section class="detail-section">
+                <h2>Property Details</h2>
+                <div class="detail-grid">
+                    <div class="detail-grid-item">
+                        <mat-icon aria-hidden="true">home</mat-icon>
+                        <span>{{ property.propertyType | enumLabel }}</span>
+                    </div>
+                    <div class="detail-grid-item">
+                        <mat-icon aria-hidden="true">bed</mat-icon>
+                        <span>{{ property.bedrooms }} Bedroom(s)</span>
+                    </div>
+                    <div class="detail-grid-item">
+                        <mat-icon aria-hidden="true">bathtub</mat-icon>
+                        <span>{{ property.bathrooms }} Bathroom(s)</span>
+                    </div>
+                    <div class="detail-grid-item">
+                        <mat-icon aria-hidden="true">square_foot</mat-icon>
+                        <span>{{ property.areaSqft }} sqft</span>
+                    </div>
+                    <div class="detail-grid-item">
+                        <mat-icon aria-hidden="true">chair</mat-icon>
+                        <span>{{ property.furnishedStatus| enumLabel }}</span>
+                    </div>
+                    <div class="detail-grid-item">
+                        <mat-icon aria-hidden="true">event</mat-icon>
+                        <span>Available from {{ property.availableFrom }}</span>
+                    </div>
+                    <div class="detail-grid-item">
+                        <mat-icon aria-hidden="true">description</mat-icon>
+                        <span>{{ property.leaseType | enumLabel }} lease</span>
+                    </div>
+                    @if (property.isSharedProperty) {
+                    <div class="detail-grid-item">
+                        <mat-icon aria-hidden="true">group</mat-icon>
+                        <span>Shared property</span>
+                    </div>
+                    }
+                </div>
+            </section>
+
+            <section class="detail-section">
+                <h2>Amenities</h2>
+                <mat-chip-set>
+                    @for (amenity of property.amenities; track amenity) {
+                    <mat-chip disabled>{{ amenity }}</mat-chip>
+                    }
+                </mat-chip-set>
+            </section>
+
+            <section class="detail-section">
+                <h2>Preferences</h2>
+                <p>{{ property.vegetarianPreference | enumLabel }}</p>
+            </section>
+        </div>
+
+        <aside class="detail-layout-sidebar">
+            <div class="detail-price-card">
+                <p class="detail-price-card-rent">
+                    {{ property.expectedRent | inrCurrency }}<span>/month</span>
+                </p>
+                @if (property.isRentNegotiable) {
+                <p class="detail-price-card-negotiable">Rent is negotiable</p>
+                }
+                @if (property.securityDeposit) {
+                <p class="detail-price-card-deposit">Security deposit: {{ property.securityDeposit | inrCurrency }}</p>
+                }
+
+                <div class="detail-price-card-landlord">
+                    <mat-icon aria-hidden="true">person</mat-icon>
+                    <div>
+                        <p class="detail-price-card-landlord-label">Listed by</p>
+                        <p class="detail-price-card-landlord-name">{{ landlordName(property.landlordId) }}</p>
+                    </div>
+                </div>
+
+                <p class="detail-price-card-posted">Posted {{ property.createdAt }}</p>
+
+                @if (isOwner()) {
+                <div class="detail-price-card-owner-actions">
+                    <button mat-flat-button color="primary" (click)="editListing()">
+                        <mat-icon aria-hidden="true">edit</mat-icon>
+                        Edit Listing
+                    </button>
+                    <button mat-stroked-button color="warn" (click)="deleteListing()">
+                        <mat-icon aria-hidden="true">delete</mat-icon>
+                        Delete Listing
+                    </button>
+                </div>
+                } @else if (!currentUser()) {
+                <a mat-flat-button color="primary" class="detail-price-card-contact" routerLink="/login">
+                    Log in to contact landlord
+                </a>
+                }
+            </div>
+        </aside>
+    </div>
+</div>
+}@else {
+
+}

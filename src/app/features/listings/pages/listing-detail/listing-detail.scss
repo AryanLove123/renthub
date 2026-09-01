@@ -1,0 +1,203 @@
+.detail-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+
+.detail-page-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--rh-text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+}
+
+.detail-layout {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.detail-layout-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.detail-layout-sidebar {
+  flex: 0 0 320px;
+  position: sticky;
+  top: 84px;
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 20px 0 8px;
+}
+
+.detail-header-status {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--rh-success);
+  background: rgba(22, 163, 74, 0.12);
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+
+.detail-header-status--rented {
+  color: var(--rh-text-secondary);
+  background: rgba(100, 116, 139, 0.12);
+}
+
+.detail-header-title {
+  margin: 0 0 6px;
+  font-size: 1.7rem;
+}
+
+.detail-header-location {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--rh-text-secondary);
+}
+
+.detail-header-favourite {
+  background: var(--rh-bg);
+  color: var(--rh-text-secondary);
+}
+
+.detail-header-favourite--active {
+  color: var(--rh-accent);
+}
+
+.detail-section {
+  margin-top: 28px;
+}
+
+.detail-section h2 {
+  font-size: 1.15rem;
+  margin: 0 0 10px;
+}
+
+.detail-description {
+  line-height: 1.6;
+  color: var(--rh-text-primary);
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 24px;
+}
+
+.detail-grid-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--rh-text-primary);
+}
+
+.detail-grid-item mat-icon {
+  color: var(--rh-primary);
+}
+
+.detail-price-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
+}
+
+.detail-price-card-rent {
+  margin: 0 0 4px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--rh-primary);
+}
+
+.detail-price-card-rent span {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--rh-text-secondary);
+}
+
+.detail-price-card-negotiable {
+  margin: 0 0 8px;
+  font-size: 0.85rem;
+  color: var(--rh-success);
+  font-weight: 600;
+}
+
+.detail-price-card-deposit {
+  margin: 0 0 16px;
+  font-size: 0.85rem;
+  color: var(--rh-text-secondary);
+}
+
+.detail-price-card-landlord {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 0;
+  border-top: 1px solid var(--rh-border);
+  border-bottom: 1px solid var(--rh-border);
+}
+
+.detail-price-card-landlord mat-icon {
+  color: var(--rh-primary);
+}
+
+.detail-price-card-landlord-label {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--rh-text-secondary);
+}
+
+.detail-price-card-landlord-name {
+  margin: 0;
+  font-weight: 600;
+}
+
+.detail-price-card-posted {
+  margin: 12px 0 16px;
+  font-size: 0.8rem;
+  color: var(--rh-text-secondary);
+}
+
+.detail-price-card-contact,
+.detail-price-card-owner-actions button {
+  width: 100%;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.detail-price-card-owner-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media (max-width: 900px) {
+  .detail-layout {
+    flex-direction: column;
+  }
+  .detail-layout__sidebar {
+    position: static;
+    width: 100%;
+  }
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}

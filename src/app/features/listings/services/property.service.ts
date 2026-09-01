@@ -62,6 +62,22 @@ export class PropertyService {
     return of(newProperty);
   }
 
+  update(id: string, landlordId: string, draft: PropertyDraft): Observable<Property>{
+    const existing  = this.getPropertyById(id);
+    if(!existing){
+      return throwError(() => new Error('Property not found'));
+    }
+
+    if(existing.landlordId != landlordId){
+      return throwError(() => new Error('You are not authorized to edit this property'));
+    }
+
+    const updatedProperty: Property = {...existing, ...draft, updatedAt:nowIso()};
+    const updated = this.properties().map( (p) => (p.id == id ? updatedProperty : p));
+    this.persistProperties(updated);
+    return of(updatedProperty);
+  }
+
   delete(id: string, landlordId: string): Observable<void> {
     const existing = this.getPropertyById(id);
     if (!existing) {
@@ -82,9 +98,7 @@ export class PropertyService {
 
   getPropertyByLandlordId(landlordId: string) {
     return this.properties()
-      .filter((property) => {
-        property.landlordId === landlordId;
-      })
+      .filter((property) => property.landlordId === landlordId)
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 

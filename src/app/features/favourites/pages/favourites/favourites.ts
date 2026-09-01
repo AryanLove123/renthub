@@ -11,7 +11,7 @@ import { PropertyCardComponent } from '../../../listings/components/property-car
   templateUrl: './favourites.html',
   styleUrl: './favourites.scss',
 })
-export class Favourites {
+export class FavouritesComponent {
   propertyService = inject(PropertyService);
   authService = inject(AuthService);
   favService = inject(FavouriteService);

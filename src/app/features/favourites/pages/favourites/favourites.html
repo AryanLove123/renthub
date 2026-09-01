@@ -1,6 +1,6 @@
 <div class="favourites-page">
   <h1>Your Favourites</h1>
-  <p class="favourites-page__subtitle">Properties you've saved for later.</p>
+  <p class="favourites-page-subtitle">Properties you've saved for later.</p>
 
   @if (favouriteProperties().length === 0) {
     <app-empty-state
@@ -11,7 +11,7 @@
       <a mat-flat-button color="primary" routerLink="/">Browse Listings</a>
     </app-empty-state>
   } @else {
-    <div class="favourites-page__grid">
+    <div class="favourites-page-grid">
       @for (property of favouriteProperties(); track property.id) {
         <app-property-card
           [property]="property"

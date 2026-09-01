@@ -1,0 +1,32 @@
+.favourites-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 20px 60px;
+}
+
+.favourites-page h1 {
+  margin: 0 0 4px;
+}
+
+.favourites-page-subtitle {
+  margin: 0 0 24px;
+  color: var(--rh-text-secondary);
+}
+
+.favourites-page-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 1100px) {
+  .favourites-page-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 620px) {
+  .favourites-page-grid {
+    grid-template-columns: 1fr;
+  }
+}

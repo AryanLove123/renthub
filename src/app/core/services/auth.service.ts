@@ -174,4 +174,13 @@ export class AuthService {
   getStoredSession(): AuthSession | null {
     return this.storageService.getItem<AuthSession>(SESSION_KEY);
   }
+
+  getUserById(userId: string): User | undefined {
+    const users = this.storageService.getItem<User[]>(USERS_KEY) ?? [];
+    return users.find((u) => u.id === userId);
+  }
+
+  getDisplayName(userId: string): string {
+    return this.getUserById(userId)?.firstName ?? 'Unknown user';
+  }
 }

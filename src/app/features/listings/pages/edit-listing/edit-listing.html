@@ -1,0 +1,33 @@
+@if (!property()) {
+  <app-error-state
+    title="Property not found"
+    message="This listing may have been removed."
+    [showRetry]="false"
+  ></app-error-state>
+} @else if (!isOwner) {
+  <app-error-state
+    title="You cannot edit this listing"
+    message="Only the landlord who created this listing can edit it."
+    [showRetry]="false"
+  ></app-error-state>
+} @else {
+  <div class="edit-listing-page">
+    <h1 class="edit-listing-page-title">
+      {{ step() == 'FORM' ? 'Edit Listing' : 'Preview Changes' }}
+    </h1>
+
+    @if (step() == 'FORM') {
+      <app-property-form
+        [initialData]="property()!"
+        (previewRequested)="onPreviewRequested($event)"
+      ></app-property-form>
+    } @else if (draft()) {
+      <app-property-preview
+        [draft]="draft()!"
+        [isSubmitting]="isSubmitting()"
+        (isEditRequested)="onEditRequested()"
+        (isConfirmed)="onConfirmed()"
+      ></app-property-preview>
+    }
+  </div>
+}
