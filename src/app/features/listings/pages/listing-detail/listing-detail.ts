@@ -12,6 +12,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { EnumLabelPipe } from '../../../../shared/pipes/enum-label.pipe';
 import { InrCurrencyPipe } from '../../../../shared/pipes/inr-currency.pipe';
 import { MatChipsModule } from '@angular/material/chips';
+import { SendInquiryDialogComponent } from '../../../inquiries/component/send-inquiry-dialog.component';
 
 @Component({
   selector: 'app-listing-detail',
@@ -34,6 +35,8 @@ export class ListingDetailComponent {
   property = computed(() => this.propertyService.getPropertyById(this.propertyId()));
 
   currentUser = this.authService.currentUser;
+
+  canSendInquiry = this.currentUser()?.role == UserRole.TENANT;
 
   isOwner = computed(() =>{
     const user = this.currentUser();
@@ -62,6 +65,22 @@ export class ListingDetailComponent {
 
     const wasFavourite = this.favService.isFavourite(user.id, property.id);
     this.favService.toggle(user.id, property.id);
+  }
+
+  openInquiryDialog(): void {
+    const user = this.currentUser();
+    const property = this.property();
+    if (!user || !property) return;
+
+    this.dialog.open(SendInquiryDialogComponent, {
+      width: '480px',
+      data: {
+        propertyId: property.id,
+        propertyTitle: property.title,
+        renterId: user.id,
+        landlordId: property.landlordId,
+      },
+    });
   }
 
   editListing(): void {

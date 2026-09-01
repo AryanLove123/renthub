@@ -119,7 +119,14 @@
                         Delete Listing
                     </button>
                 </div>
-                } @else if (!currentUser()) {
+                }@else if (canSendInquiry) {
+                <button mat-flat-button color="primary" class="detail-price-card-contact"
+                    (click)="openInquiryDialog()">
+                    <mat-icon>mail</mat-icon>
+                    Contact Landlord
+                </button>
+                }
+                @else if (!currentUser()) {
                 <a mat-flat-button color="primary" class="detail-price-card-contact" routerLink="/login">
                     Log in to contact landlord
                 </a>

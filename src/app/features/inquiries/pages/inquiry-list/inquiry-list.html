@@ -1,0 +1,42 @@
+<div class="inquiry-list-page">
+  <div class="inquiry-list-header">
+    <h1>Inquiries</h1>
+    <p>Manage discussions with landlords and renters.</p>
+  </div>
+
+  @if (userInquiries().length === 0) {
+    <div class="empty-state">
+      <mat-icon>chat_bubble_outline</mat-icon>
+      <h2>No inquiries found</h2>
+      <p>Your property inquiries and conversations will appear here.</p>
+    </div>
+  } @else {
+    <div class="inquiries-grid">
+      @for (inquiry of userInquiries(); track inquiry.id) {
+        <mat-card class="inquiry-card" [routerLink]="['/inquiries', inquiry.id]">
+          <div class="card-top-row">
+            <div>
+              <p class="other-party">{{ otherPartyName(inquiry.renterId, inquiry.landlordId) }}</p>
+              <mat-card-title>{{ getPropertyTitle(inquiry.propertyId) }}</mat-card-title>
+            </div>
+            <mat-chip [class]="'status-' + inquiry.status.toLowerCase()">
+              {{ inquiry.status }}
+            </mat-chip>
+          </div>
+
+          <mat-card-content>
+            <p class="last-message">{{ getLastMessage(inquiry.id) }}</p>
+          </mat-card-content>
+
+          <div class="card-footer">
+            <span class="updated-time">Updated: {{ formatDate(inquiry.updatedAt) }}</span>
+            <div class="action-link">
+              <span>View Chat</span>
+              <mat-icon>chevron_right</mat-icon>
+            </div>
+          </div>
+        </mat-card>
+      }
+    </div>
+  }
+</div>

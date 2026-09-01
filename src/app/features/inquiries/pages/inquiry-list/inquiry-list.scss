@@ -1,0 +1,136 @@
+.inquiry-list-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+
+    .inquiry-list-header {
+        margin-bottom: 2rem;
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0 0 0.5rem 0;
+        }
+
+        p {
+            color: #64748b;
+            margin: 0;
+        }
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 1rem;
+        background: #f8fafc;
+        border-radius: 12px;
+        border: 1px dashed #cbd5e1;
+
+        mat-icon {
+            font-size: 48px;
+            width: 48px;
+            height: 48px;
+            color: #94a3b8;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            color: #1e293b;
+            margin: 0 0 0.5rem 0;
+        }
+
+        p {
+            color: #64748b;
+            margin: 0;
+        }
+    }
+
+    .inquiries-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .inquiry-card {
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+            transition: border-color 0.2s, box-shadow 0.2s;
+
+            &:hover {
+                border-color: #0f766e;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            }
+
+            .card-top-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 0.75rem;
+            }
+
+            .other-party {
+                font-size: 0.8rem;
+                color: #64748b;
+                margin: 0 0 0.15rem 0;
+            }
+
+            mat-card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 0.75rem;
+
+                mat-card-title {
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    color: #0f172a;
+                }
+            }
+
+            .last-message {
+                color: #475569;
+                font-size: 0.95rem;
+                margin: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .card-footer {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.75rem 1rem;
+                border-top: 1px solid #f1f5f9;
+                margin-top: 1rem;
+
+                .updated-time {
+                    font-size: 0.8rem;
+                    color: #94a3b8;
+                }
+
+                .action-link {
+                    display: flex;
+                    align-items: center;
+                    color: #0f766e;
+                    font-weight: 600;
+                    font-size: 0.85rem;
+                }
+            }
+        }
+    }
+}
+
+
+/* Status Badges */
+::ng-deep mat-chip {
+    &.status-pending {
+        background-color: #fef3c7 !important;
+        color: #92400e !important;
+    }
+
+    &.status-responded {
+        background-color: #d1fae5 !important;
+        color: #065f46 !important;
+    }
+}

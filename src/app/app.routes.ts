@@ -32,6 +32,14 @@ export const routes: Routes = [
     {
         path: 'landlord/listings/:id/edit',
         loadComponent: () => import('./features/listings/pages/edit-listing/edit-listing').then(m =>m.EditListingComponent)
-    }
+    },
+    {
+        path: 'inquiries',
+        loadComponent: () => import('./features/inquiries/pages/inquiry-list/inquiry-list').then(m => m.InquiryListComponent)
+    },
+    {
+        path: 'inquiries/:inquiryId',
+        loadComponent: () => import('./features/inquiries/pages/inquiry-conversation/inquiry-conversation').then(m => m.InquiryConversationComponent)
+    },
     
 ];

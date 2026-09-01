@@ -1,0 +1,42 @@
+@if (!inquiry() || !isParticipant()) {
+<div class="chat-container">
+    <a routerLink="/inquiries" class="back-link">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Back to Inquiries</span>
+    </a>
+    <p>This conversation doesn't exist or you don't have access to it.</p>
+</div>
+} @else {
+<div class="chat-container">
+    <header class="chat-header">
+        <a routerLink="/inquiries" class="back-link">
+            <mat-icon>arrow_back</mat-icon>
+            <span>Back to Inquiries</span>
+        </a>
+        <h1 class="chat-user-name">{{ otherPartyName() }}</h1>
+        <p class="chat-property-title">{{ property()?.title }}</p>
+    </header>
+
+    <main class="chat-messages" #scrollContainer>
+        @for (msg of activeMessages(); track msg.id) {
+        <div class="message-group" [class.is-mine]="msg.senderId === currentUser()?.id">
+            <span class="sender-label">{{ getSenderName(msg.senderId) }}</span>
+            <div class="message-bubble">{{ msg.message }}</div>
+            <span class="message-timestamp">{{ formatTime(msg.createdAt) }}</span>
+        </div>
+        }
+    </main>
+
+    <footer class="chat-composer">
+        <div class="composer-form">
+            <input type="text" class="composer-input" placeholder="Type a message..." [value]="messageText()"
+                (input)="messageText.set($any($event.target).value)" (keydown.enter)="onEnter($event)"
+                [disabled]="isSending()" />
+            <button type="button" class="composer-send-btn" [disabled]="!messageText().trim() || isSending()"
+                (click)="sendMessage()">
+                <mat-icon>send</mat-icon>
+            </button>
+        </div>
+    </footer>
+</div>
+}
