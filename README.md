@@ -4,7 +4,7 @@ RentHub is a web-based apartment rental platform built with Angular. It lets lan
 
 ## Live Demo
 
-- **Deployed App:** [ADD_DEPLOYED_URL_HERE]
+- **Deployed App:** https://renthub-seven-phi.vercel.app/
 - **GitHub Repository:** https://github.com/AryanLove123/renthub
 
 ## Demo Credentials
@@ -14,9 +14,7 @@ The app seeds a set of demo users into `localStorage` on first load. Use any of 
 | Role     | Email                          | Password      |
 |----------|---------------------------------|---------------|
 | Landlord | landlord@renthub.demo           | RentHub@123   |
-| Landlord | priya.landlord@renthub.demo     | RentHub@123   |
 | Renter   | renter@renthub.demo             | RentHub@123   |
-| Renter   | sneha.renter@renthub.demo       | RentHub@123   |
 
 You can also register a new account from the app itself.
 
