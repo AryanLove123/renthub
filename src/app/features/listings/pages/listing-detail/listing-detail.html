@@ -106,7 +106,7 @@
                     </div>
                 </div>
 
-                <p class="detail-price-card-posted">Posted {{ property.createdAt }}</p>
+                <p class="detail-price-card-posted">Posted {{ property.createdAt | date }}</p>
 
                 @if (isOwner()) {
                 <div class="detail-price-card-owner-actions">

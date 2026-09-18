@@ -20,9 +20,6 @@ import { FavouriteService } from '../../../favourites/services/favourite';
 })
 export class PropertyListingsComponent {
   filtersOpen = signal(false);
-  
-
-
   searchQuery: SearchQuery = {};
   propertyFilters: PropertyFilters = {};
 
@@ -39,6 +36,11 @@ export class PropertyListingsComponent {
   currentPage = this.propertyService.currentPage;
   pageSize = this.propertyService.pageSize;
 
+  ngOnInit(): void {
+    this.searchQuery = {}; 
+    this.propertyFilters = {};
+    this.propertyService.setFilters({});
+  }
 
   onSearchHandler(query: SearchQuery){
     this.searchQuery = query;
@@ -70,8 +72,10 @@ export class PropertyListingsComponent {
 
   onClickFavIconHandler(propertyId: string): void {
     const user = this.authService.currentUser();
-    if(user){
-      this.favService.toggle(user.id, propertyId);
+    if(!user){
+      alert("Please log in to save favourites");
+      return;
     }
+    this.favService.toggle(user.id, propertyId);
   }
 }

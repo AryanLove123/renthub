@@ -13,10 +13,11 @@ import { EnumLabelPipe } from '../../../../shared/pipes/enum-label.pipe';
 import { InrCurrencyPipe } from '../../../../shared/pipes/inr-currency.pipe';
 import { MatChipsModule } from '@angular/material/chips';
 import { SendInquiryDialogComponent } from '../../../inquiries/component/send-inquiry-dialog.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-listing-detail',
-  imports: [RouterLink, MatIconModule, MatButtonModule,EnumLabelPipe, InrCurrencyPipe, MatChipsModule],
+  imports: [RouterLink, MatIconModule, MatButtonModule,EnumLabelPipe, InrCurrencyPipe, MatChipsModule, DatePipe],
   templateUrl: './listing-detail.html',
   styleUrl: './listing-detail.scss',
 })
@@ -58,7 +59,8 @@ export class ListingDetailComponent {
   toggleFavourite(): void {
     const user = this.currentUser();
     const property = this.property();
-    if (!user) {
+    if(!user){
+      alert("Please log in to save favorites")
       return;
     }
     if (!property) return;
