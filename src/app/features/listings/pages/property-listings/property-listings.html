@@ -2,7 +2,7 @@
   <div class="property-listing-header">
     <h1 class="property-listing-title">Find your next home, without the hassle</h1>
     <p class="property-listing-subtitle">Search verified listings, chat with landlords, and move in with confidence.</p>
-    <app-property-search (clickSearch)="onSearchHandler($event)"></app-property-search>
+    <app-property-search [initialQuery]="searchQuery" (clickSearch)="onSearchHandler($event)"></app-property-search>
   </div>
 
   <section class="property-listing-section" id="listing-results">
@@ -26,7 +26,7 @@
 
     <div class="listing-layout">
       <aside class="listing-layout-sidebar" [class.listing-layout-sidebar--open]="filtersOpen()">
-        <app-property-filters (onFiltersChanged)="onFiltersChangedHandler($event)"
+        <app-property-filters [initialFilters]="propertyFilters" (onFiltersChanged)="onFiltersChangedHandler($event)"
           (closed)="filtersOpen.set(false)"></app-property-filters>
       </aside>
 

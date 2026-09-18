@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,7 +18,8 @@ export interface SearchQuery {
   templateUrl: './property-search.html',
   styleUrl: './property-search.scss',
 })
-export class PropertySearchComponent {
+export class PropertySearchComponent implements OnInit {
+  @Input() initialQuery: SearchQuery = {};
   @Output() clickSearch = new EventEmitter<SearchQuery>();
 
   fb = inject(FormBuilder);
@@ -35,6 +36,18 @@ export class PropertySearchComponent {
         takeUntilDestroyed(),
       )
       .subscribe(() => this.emitSearch());
+  }
+
+  ngOnInit(): void {
+    if (this.initialQuery) {
+      this.searchForm.patchValue(
+        {
+          keyword: this.initialQuery.keyword ?? '',
+          city: this.initialQuery.city ?? '',
+        },
+        { emitEvent: false }
+      );
+    }
   }
 
   emitSearch() {

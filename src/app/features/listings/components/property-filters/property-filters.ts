@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -33,7 +33,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   templateUrl: './property-filters.html',
   styleUrl: './property-filters.scss',
 })
-export class PropertyFiltersComponent {
+export class PropertyFiltersComponent implements OnInit {
+  @Input() initialFilters: PropertyFilters = {};
   @Output() onFiltersChanged = new EventEmitter<PropertyFilters>();
   @Output() closed = new EventEmitter<void>();
 
@@ -57,6 +58,22 @@ export class PropertyFiltersComponent {
     this.propertyFilterForm.valueChanges
       .pipe(debounceTime(250), takeUntilDestroyed())
       .subscribe(() => this.emitFilters());
+  }
+
+  ngOnInit(): void {
+    if (this.initialFilters) {
+      this.propertyFilterForm.patchValue(
+        {
+          minRent: this.initialFilters.minRent ?? null,
+          maxRent: this.initialFilters.maxRent ?? null,
+          propertyType: this.initialFilters.propertyType ?? null,
+          bedrooms: this.initialFilters.bedrooms ?? null,
+          furnishingStatus: this.initialFilters.furnishedStatus ?? null,
+          amenities: this.initialFilters.amenities ?? [],
+        },
+        { emitEvent: false }
+      );
+    }
   }
 
   toggleAmenity(amenity: Amenity, checked: boolean): void {

@@ -20,9 +20,6 @@ import { FavouriteService } from '../../../favourites/services/favourite';
 })
 export class PropertyListingsComponent {
   filtersOpen = signal(false);
-  searchQuery: SearchQuery = {};
-  propertyFilters: PropertyFilters = {};
-
   authService = inject(AuthService);
   favService = inject(FavouriteService);
   propertyService = inject(PropertyService);
@@ -36,11 +33,12 @@ export class PropertyListingsComponent {
   currentPage = this.propertyService.currentPage;
   pageSize = this.propertyService.pageSize;
 
-  ngOnInit(): void {
-    this.searchQuery = {}; 
-    this.propertyFilters = {};
-    this.propertyService.setFilters({});
-  }
+  searchQuery: SearchQuery = {
+    keyword: this.propertyService.filters().keyword,
+    city: this.propertyService.filters().city,
+  };
+  
+  propertyFilters: PropertyFilters = this.propertyService.filters();
 
   onSearchHandler(query: SearchQuery){
     this.searchQuery = query;
